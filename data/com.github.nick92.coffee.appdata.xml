@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2017 Nick Wilkins <nickawilkins@hotmail.com>-->
 <component type="desktop">
-  <id>com.github.nick92.coffee-news.desktop</id>
+  <id>com.github.nick92.coffee.desktop</id>
   <metadata_license>CC0</metadata_license>
   <name>Coffee</name>
   <summary>Get the latest weather and news</summary>

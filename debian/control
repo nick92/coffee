@@ -1,4 +1,4 @@
-Source: com.github.nick92.coffee-news
+Source: com.github.nick92.coffee
 Section: x11
 Priority: optional
 Maintainer: Nick Wilkins <nickawilkins@hotmail.com>
@@ -17,7 +17,7 @@ Build-Depends:  debhelper (>= 9),
 				meson
 Standards-Version: 3.9.6
 
-Package: com.github.nick92.coffee-news
+Package: com.github.nick92.coffee
 Architecture: any
 Depends:  ${misc:Depends}, ${shlibs:Depends}, libnotify4, geoclue-2.0, keybinder-3.0
 Description: Keep up with current news and weather with Coffee

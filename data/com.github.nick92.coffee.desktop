@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Coffee
-Exec=com.github.nick92.coffee-news
+Exec=com.github.nick92.coffee
 Icon=coffee-news
 Terminal=false
 Type=Application

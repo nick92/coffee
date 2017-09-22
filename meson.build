@@ -1,4 +1,4 @@
-project ('com.github.nick92.coffee-news', ['vala', 'c'])
+project ('com.github.nick92.coffee', ['vala', 'c'])
 
 add_project_arguments(['--vapidir', join_paths(meson.current_source_dir(), 'vapi')], language: 'vala')
 

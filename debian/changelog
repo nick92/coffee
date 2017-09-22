@@ -1,4 +1,17 @@
-com.github.nick92.coffee-news (0.0.3) xenial; urgency=medium
+com.github.nick92.coffee (1.0.1) xenial; urgency=medium
+
+  * change of desktop and executable name  
+
+ -- Nick Wilkins <nickawilkins@hotmail.com>  Fri, 22 Sep 2017 13:38:54 +0100
+
+
+com.github.nick92.coffee (1.0.0) xenial; urgency=medium
+
+  * release for elementary
+
+ -- Nick Wilkins <nickawilkins@hotmail.com>  Fri, 22 Sep 2017 13:38:54 +0100
+
+com.github.nick92.coffee (0.0.3) xenial; urgency=medium
 
   * remove ability to disable news or weather
   * fix the new york times news feed
@@ -8,7 +21,7 @@ com.github.nick92.coffee-news (0.0.3) xenial; urgency=medium
  -- Nick Wilkins <nickawilkins@hotmail.com>  Fri, 22 Sep 2017 13:38:54 +0100
 
 
-com.github.nick92.coffee-news (0.0.2) xenial; urgency=medium
+com.github.nick92.coffee (0.0.2) xenial; urgency=medium
 
   * edit selected news icon.
   * change refresh icon
@@ -17,7 +30,7 @@ com.github.nick92.coffee-news (0.0.2) xenial; urgency=medium
  -- Nick Wilkins <nickawilkins@hotmail.com>  Thu, 21 Sep 2017 10:38:54 +0100
 
 
-com.github.nick92.coffee-news (0.0.1) xenial; urgency=medium
+com.github.nick92.coffee (0.0.1) xenial; urgency=medium
 
   * Initial Release.
 

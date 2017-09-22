@@ -1,5 +1,5 @@
 <schemalist>
-	<schema path="/com/github/nick92/coffee-news/" id="com.github.nick92.coffee-news" gettext-domain="coffee-news">
+	<schema path="/com/github/nick92/coffee/" id="com.github.nick92.coffee" gettext-domain="coffee">
 		<key name="bbc-news" type="b">
             <default>true</default>
             <summary>Use BBC News feed</summary>

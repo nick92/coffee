@@ -17,7 +17,7 @@ sources = [
     coffee_resources
 ]
 
-executable ('com.github.nick92.coffee-news',
+executable ('com.github.nick92.coffee',
             sources,
             dependencies: [glib, gtk, json, soup, webkit, gee, geocode, keybinder, notify, geoclue],
             vala_args:['--target-glib=2.38', '--gresources=' + meson.source_root () + '/data/coffee-resource.xml'],
