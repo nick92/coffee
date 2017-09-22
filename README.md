@@ -16,3 +16,14 @@ You'll need the following dependencies:
 	libgeoclue-2-dev
 	libkeybinder-3.0-dev
 	libnotify-dev
+
+### Build with Meson 
+
+	mkdir build
+	meson build --prefix=/usr
+	ninja
+
+### Install & Run
+
+	sudo ninja install
+	./src/coffee-news
