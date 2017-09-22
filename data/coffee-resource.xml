@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/github/nick92/Coffee">
+    <file compressed="true">ui/Loading.html</file>
+    <file compressed="true">ui/News.html</file>
+    <file compressed="true">ui/Article.html</file>
+    <file compressed="true">ui/Weather.html</file>
+    <file compressed="true">ui/Forecast.html</file>
+    <file compressed="true">ui/Main.js</file>
+    <file compressed="true">ui/style.css</file>
+    <file compressed="true">icons/symbol/coffee-news-symbolic.svg</file>
+    <file compressed="true">icons/news/bbc-sport.png</file>
+    <file compressed="true">icons/news/bbc-news.png</file>
+    <file compressed="true">icons/news/google-news.png</file>
+    <file compressed="true">icons/news/engadget.png</file>
+    <file compressed="true">icons/news/the-guardian-uk.png</file>
+    <file compressed="true">icons/news/hacker-news.png</file>
+    <file compressed="true">icons/news/the-next-web.png</file>
+    <file compressed="true">icons/news/the-new-york-times.png</file>
+  </gresource>
+</gresources>
+

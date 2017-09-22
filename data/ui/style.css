@@ -1,0 +1,261 @@
+body {
+    background-color:#ededed;
+}
+
+h1 {
+  font-size: 1.1em;
+  font-weight: normal;
+  margin-bottom: 10px;
+  border-bottom: 1px #e0e0e0 solid;
+  padding-bottom: 12px;
+  padding-right: 20px;
+  width: 87%;
+}
+
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+
+h1 a:hover {
+  color: #00B297;
+} 
+
+h2 {
+  font-size: 1em;
+  font-weight: normal;
+}
+
+h3 {
+  font-size: 1em;
+  line-height: 1.66em;
+}
+
+
+* {
+  max-width: 100%;
+  height: auto;
+}
+
+p,
+code,
+pre,
+blockquote,
+ul,
+ol,
+li,
+figure,
+.wp-caption {
+  margin: 0 0 30px 0;
+}
+
+p > img:only-child,
+p > a:only-child > img:only-child,
+.wp-caption img,
+figure img {
+  display: block;
+}
+
+.caption,
+.wp-caption-text,
+figcaption {
+  font-size: 0.9em;
+  line-height: 1.48em;
+  font-style: italic;
+}
+
+code,
+pre {
+  white-space: pre-wrap;
+}
+
+blockquote {
+  padding: 0;
+  -webkit-padding-start: 16px;
+}
+
+ul,
+ol {
+  padding: 0;
+}
+
+ul {
+  -webkit-padding-start: 30px;
+  list-style: disc;
+}
+
+ol {
+  -webkit-padding-start: 30px;
+  list-style: decimal;
+}
+
+/* Hide elements with common "hidden" class names */
+.visually-hidden,
+.visuallyhidden,
+.hidden,
+.invisible,
+.sr-only {
+  display: none;
+}
+
+/* FeedView */
+
+#owl_img {
+  width: 37px;
+}
+
+article {
+  overflow-y: hidden;
+  margin: 20px auto;
+  width: 334px;
+  /*height: 179px;*/
+  color: #000;
+  font-family: Raleway;
+  font-size: 16px;
+  word-wrap: break-word;
+  background-color: #ffffff;
+  box-shadow: 1px 1px 1px #d3d3d3;
+  padding: 5px;
+  padding-left: 15px;
+  border-radius: 2px;
+}
+
+weather {
+  overflow-y: hidden;
+  margin: 20px auto;
+  width: 334px;
+  /*height: 179px;*/
+  color: #000;
+  font-family: Raleway;
+  font-size: 16px;
+  word-wrap: break-word;
+  background-color: #ffffff;
+  box-shadow: 1px 1px 1px #d3d3d3;
+  padding: 5px;
+  padding-left: 15px;
+  display: block;
+  border-radius: 2px;
+}
+
+.img_news {
+    width: 234px;
+    margin: 0 auto;
+    display: block;
+}
+
+.break_ico {
+  margin: 0 auto;
+  display: block;
+  padding-top: 10px;
+}
+
+#news_ico {
+  width: 20px;
+}
+
+#cloud_ico {
+  width: 25px;
+}
+
+breakweather {
+  border-bottom: 1px blue solid;
+  padding-bottom: 10px;
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+}
+
+breaknews {
+  border-bottom: 1px purple solid;
+  padding-bottom: 10px;
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* weather box */
+
+#weather_today_img{
+  width: 140px;
+}
+
+forecast {
+  width: 100%;
+  display: inline-flex;
+  margin: 0 auto;
+}
+
+.forecast_header {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 0.8em;
+  font-weight: lighter;
+  text-align: center;
+}
+
+#today_temp {
+  margin-left: 20px;
+  font-size: 2.5em;
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+#today_text {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+#today_weather {
+  width: 190px;
+  float: right;
+  margin-bottom: 30px;
+}
+
+.weather_forecast_img {
+  width: 40px;
+  margin: 0 auto;
+  display: block;
+}
+
+.forecast_temp {
+  text-align: center;
+}
+
+.forecast_container {
+  width: 71px;
+  border-right: 1px #e0e0e0 dashed;
+  padding-right: 2px;
+  padding-left: 2px;
+}
+
+#weather_img {
+  width: 140px;
+}
+
+#weather_footer {
+  font-size: 10px;
+  float: right;
+  padding-top: 30px;
+  margin: 0;
+}
+
+/* footer */
+
+#footer {
+  font-size: 14px;
+  color: #777;
+}
+
+#footer a:link,
+#footer a:active,
+#footer a:visited {
+  text-decoration: none;
+  color: #777;
+}
+
+#footer a:hover {
+  text-decoration: underline;
+}
+
+

@@ -1,0 +1,79 @@
+<schemalist>
+	<schema path="/com/github/nick92/coffee-news/" id="com.github.nick92.coffee-news" gettext-domain="coffee-news">
+		<key name="bbc-news" type="b">
+            <default>true</default>
+            <summary>Use BBC News feed</summary>
+            <description></description>
+        </key>
+		<key name="google-news" type="b">
+            <default>false</default>
+            <summary>Use Google News feed</summary>
+            <description></description>
+        </key>
+		<key name="bbc-sport" type="b">
+            <default>false</default>
+            <summary>Use BBC Sport feed</summary>
+            <description></description>
+        </key>
+		<key name="engadget" type="b">
+            <default>true</default>
+            <summary>Use engadget feed</summary>
+            <description></description>
+        </key>
+		<key name="the-guardian-uk" type="b">
+            <default>false</default>
+            <summary>Use Guardian UK feed</summary>
+            <description></description>
+        </key>
+		<key name="hacker-news" type="b">
+            <default>false</default>
+            <summary>Use Hacker News feed</summary>
+            <description></description>
+        </key>
+		<key name="the-next-web" type="b">
+            <default>false</default>
+            <summary>Use Next Web feed</summary>
+            <description></description>
+        </key>
+		<key name="the-new-york-times" type="b">
+            <default>true</default>
+            <summary>Use New York Times feed</summary>
+            <description></description>
+        </key>
+		<key name="weather" type="b">
+            <default>true</default>
+            <summary>Enable weather widget</summary>
+            <description></description>
+        </key>
+		<key name="news" type="b">
+            <default>true</default>
+            <summary>Enable news widget</summary>
+            <description></description>
+        </key>
+		<key name="dark-sky" type="b">
+            <default>true</default>
+            <summary>Use dark sky feed for weather</summary>
+            <description></description>
+        </key>
+		<key name="open-weather-map" type="b">
+            <default>false</default>
+            <summary>Use Open Weather Map feed for weather</summary>
+            <description></description>
+        </key>
+		<key name="geolocation" type="s">
+            <default>""</default>
+            <summary>Geolocation from weather report</summary>
+            <description></description>
+        </key>
+		<key name="location" type="s">
+            <default>""</default>
+            <summary>Location name from weather report</summary>
+            <description></description>
+        </key>
+		<key name="getgeolocation" type="b">
+            <default>true</default>
+            <summary>Get geolocation automatically</summary>
+            <description></description>
+        </key>
+	</schema>
+</schemalist>

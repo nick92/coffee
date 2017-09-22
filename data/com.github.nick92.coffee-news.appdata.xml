@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Nick Wilkins <nickawilkins@hotmail.com>-->
+<component type="desktop">
+  <id>com.github.nick92.coffee-news.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <name>Coffee</name>
+  <summary>Get the latest weather and news</summary>
+  <developer_name>Nick Wilkins</developer_name>
+  <url type="homepage">https://github.com/nick92/coffee</url>
+  <url type="bugtracker">https://github.com/nick92/coffee/issues/</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://i.imgur.com/IdbUHjw.png</image>
+    </screenshot>
+  </screenshots>
+  <description>
+    <p>
+      Catch up with the latest news and weather with Coffee
+    </p>
+    <ul>
+      <li>Choose from various news sources around the web</li>
+      <li>Displays current and 5 day weather information for your location</li>
+      <li>Launch with single key press for easy access from anywhere</li>
+    </ul>
+  </description>
+<custom>
+     <value key="x-appcenter-color-primary">#C44786</value>
+     <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
+     <value key="x-appcenter-suggested-price">1</value>
+  </custom>
+</component>
