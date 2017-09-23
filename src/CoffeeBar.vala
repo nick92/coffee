@@ -67,16 +67,23 @@ namespace Coffee {
     }
 
     public async void get_feeds (){
+      SourceFunc callback = get_feeds.callback;
+      try{
+        ThreadFunc<void*> run = () => {
+          retriever.run_parser_weather ();
 
-      if(settings.weather_bool)
-        yield retriever.run_parser_weather ();
-      else
-        weather_loaded = true;
+          retriever.run_parser_news ();
 
-      if(settings.news_bool)
-        yield retriever.run_parser_news ();
-      else
-        news_loaded = true;
+          Idle.add((owned) callback);
+          return null;
+        };
+        Thread.create<void*>(run, false);
+
+      } catch (ThreadError e) {
+          stderr.printf(@"Thread error: %s\n", e.message);
+      }
+
+      yield;
     }
 
     private void display_all () {
@@ -120,8 +127,8 @@ namespace Coffee {
       news_loaded = false;
       weather_loaded = false;
 
-      if(settings.get_location_bool)
-        get_location.begin ();
+      //if(settings.get_location_bool)
+        //get_location.begin ();
 
       get_feeds.begin();
     }
@@ -138,7 +145,7 @@ namespace Coffee {
       this.set_keep_above (true);
 
       // Sets the default size of a window:
-  		this.set_default_size (400, height);
+  		this.set_default_size (600, height);
   		this.hide_titlebar_when_maximized = false;
   		this.destroy.connect (() => {
         Gtk.main_quit ();
@@ -146,8 +153,6 @@ namespace Coffee {
 
       spinner = new Gtk.Spinner ();
       spinner.active = true;
-      //spinner.halign = Gtk.Align.CENTER;
-      //spinner.vexpand = true;
 
       btn_setting = new Gtk.Button ();
       btn_setting.image = new Gtk.Image.from_icon_name ("application-menu-symbolic", Gtk.IconSize.MENU);
