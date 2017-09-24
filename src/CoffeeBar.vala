@@ -45,6 +45,7 @@ namespace Coffee {
     private bool weather_loaded = false;
     private bool news_loaded = false;
 
+    public SourceFunc callback;
 
     public CoffeeBar (){
       retriever = new Worker.Retriever ();
@@ -67,21 +68,10 @@ namespace Coffee {
     }
 
     public async void get_feeds (){
-      SourceFunc callback = get_feeds.callback;
-      try{
-        ThreadFunc<void*> run = () => {
-          retriever.run_parser_weather ();
-
-          retriever.run_parser_news ();
-
-          Idle.add((owned) callback);
-          return null;
-        };
-        Thread.create<void*>(run, false);
-
-      } catch (ThreadError e) {
-          stderr.printf(@"Thread error: %s\n", e.message);
-      }
+      //callback = get_feeds.callback;
+      GLib.Idle.add(this.get_feeds.callback);
+      retriever.run_parser_weather ();
+      retriever.run_parser_news ();
 
       yield;
     }
@@ -145,7 +135,7 @@ namespace Coffee {
       this.set_keep_above (true);
 
       // Sets the default size of a window:
-  		this.set_default_size (600, height);
+  		this.set_default_size (400, height);
   		this.hide_titlebar_when_maximized = false;
   		this.destroy.connect (() => {
         Gtk.main_quit ();
@@ -227,7 +217,7 @@ namespace Coffee {
                 break;
 
             case "Escape":
-                  hide ();
+                  destroy ();
 
                 return true;
 

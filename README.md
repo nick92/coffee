@@ -14,8 +14,6 @@ You'll need the following dependencies:
 	libgee-0.8-dev
 	libgeocode-glib-dev
 	libgeoclue-2-dev
-	libkeybinder-3.0-dev
-	libnotify-dev
 
 ### Build with Meson 
 

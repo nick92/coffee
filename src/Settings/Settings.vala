@@ -60,7 +60,7 @@ namespace Settings {
     static Settings instance = null;
 
     public Settings () {
-        this.coffee_settings = new GLib.Settings("com.github.nick92.coffee-news");
+        this.coffee_settings = new GLib.Settings("com.github.nick92.coffee");
         this.coffee_settings.bind(news_string,this,"news_bool",SettingsBindFlags.DEFAULT);
         this.coffee_settings.bind(bbc_news_string,this,"bbc_news_bool",SettingsBindFlags.DEFAULT);
         this.coffee_settings.bind(bbc_sport_string,this,"bbc_sport_bool",SettingsBindFlags.DEFAULT);

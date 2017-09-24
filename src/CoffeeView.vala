@@ -51,7 +51,7 @@ namespace Coffee {
 
     public CoffeeView (){
       Object (name: "Article");
-      this.zoom_level = 1.6;
+      //this.zoom_level = 1.6;
       app = GLib.Application.get_default () as CoffeeApp;
       coffee_settings = Settings.Settings.get_default ();
       try {

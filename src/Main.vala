@@ -17,14 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Coffee. If not, see <http://www.gnu.org/licenses/>.
  */
-using Gtk, Keybinder;
+using Gtk;
 
 namespace Coffee {
-
-  public void bind_key (string keystring, void *udata) {
-    CoffeeBar bar = (CoffeeBar) udata;
-    bar.show_bar ();
-  }
 
   public class CoffeeApp : Gtk.Application {
 
@@ -40,29 +35,18 @@ namespace Coffee {
     }
 
     public void connect_events () {
-      Keybinder.init();
+      /*Keybinder.init();
       Keybinder.bind(ACTIVTE_KEY, Coffee.bind_key, bar);
 
       this.window_removed.connect(() => {
         show_notification("Coffee Closed", "Handling key %s unbound".printf(ACTIVTE_KEY));
         unblind_key ();
-      });
+      });*/
     }
 
     public CoffeeApp () {
-      Notify.init ("Coffee");
-      show_notification("Coffee Started", "Press %s to hide / show.\n Quit with %s.".printf(ACTIVTE_KEY, QUIT_KEY));
-    }
-
-    public void show_notification(string summary, string body)
-    {
-      string icon = "coffee-news";
-      try {
-    		Notify.Notification notification = new Notify.Notification (summary, body, icon);
-    		notification.show ();
-    	} catch (Error e) {
-    		error ("Error: %s", e.message);
-    	}
+      //Notify.init ("Coffee");
+      //show_notification("Coffee Started", "Press %s to hide / show.\n".printf(ACTIVTE_KEY));
     }
 
     public static int main(string[] args) {
@@ -95,12 +79,6 @@ namespace Coffee {
           builder.append (append);
 
         return builder.str.dup ();
-    }
-
-    public void unblind_key ()
-    {
-      Keybinder.unbind(ACTIVTE_KEY, Coffee.bind_key);
-      print("Handling key unbound\n");
     }
   }
 }
