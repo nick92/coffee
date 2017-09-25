@@ -1,3 +1,10 @@
+com.github.nick92.coffee (1.0.5) xenial; urgency=medium
+
+  * change appdata colour scheme
+
+ -- Nick Wilkins <nickawilkins@hotmail.com>  Mon, 25 Sep 2017 13:38:54 +0100
+
+
 com.github.nick92.coffee (1.0.4) xenial; urgency=medium
 
   * remove keybinder and notify deps in control file
