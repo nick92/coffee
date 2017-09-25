@@ -29,8 +29,10 @@ namespace Coffee {
     const string QUIT_KEY = "F4";
 
     protected override void activate () {
-      bar = new CoffeeBar ();
-      bar.set_application(this);
+      if (this.get_windows () == null) {
+        bar = new CoffeeBar ();
+        bar.set_application(this);
+      }
       connect_events();
     }
 
