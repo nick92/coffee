@@ -10,7 +10,7 @@
   <url type="bugtracker">https://github.com/nick92/coffee/issues/</url>
   <screenshots>
     <screenshot type="default">
-      <image>https://i.imgur.com/fV3Ds1W.png</image>
+      <image>https://i.imgur.com/t44PLJr.png</image>
     </screenshot>
   </screenshots>
   <description>
@@ -20,8 +20,11 @@
     <ul>
       <li>Choose from various news sources around the web</li>
       <li>Displays current and 5 day weather information for your location</li>
-      <li>Launch with single key press for easy access from anywhere</li>
     </ul>
+	<p>
+	  Coffee provides current weather information for your location and news reports from various sources around the internet, take 
+      a break from hard work and catch up with the lastest news from around the internet
+	</p>
   </description>
 <custom>
      <value key="x-appcenter-color-primary">#E8E9EC</value>
