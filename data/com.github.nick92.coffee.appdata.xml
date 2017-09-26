@@ -6,7 +6,7 @@
   <name>Coffee</name>
   <summary>Get the latest weather and news</summary>
   <developer_name>Nick Wilkins</developer_name>
-  <url type="homepage">https://github.com/nick92/coffee</url>
+  <url type="homepage">https://nick92.github.io/coffee/</url>
   <url type="bugtracker">https://github.com/nick92/coffee/issues/</url>
   <screenshots>
     <screenshot type="default">
@@ -19,16 +19,16 @@
     </p>
     <ul>
       <li>Choose from various news sources around the web</li>
-      <li>Displays current and 5 day weather information for your location</li>
+      <li>Displays current and 5 day weather forecast for your location</li>
     </ul>
 	<p>
-	  Coffee provides current weather information for your location and news reports from various sources around the internet, take 
+	  Coffee provides current weather information for your location and news reports from various sources, take 
       a break from hard work and catch up with the lastest news from around the internet
 	</p>
   </description>
 <custom>
-     <value key="x-appcenter-color-primary">#E8E9EC</value>
-     <value key="x-appcenter-color-primary-text">#333333</value>
+     <value key="x-appcenter-color-primary">#7b4397</value>
+     <value key="x-appcenter-color-primary-text">#ffffff</value>
      <value key="x-appcenter-suggested-price">1</value>
   </custom>
 </component>
