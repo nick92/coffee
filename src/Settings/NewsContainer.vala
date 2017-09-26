@@ -103,7 +103,8 @@ public class NewsContainer : Gtk.FlowBoxChild {
         card_box.add (image);
         card_box.margin = 9;
 
-        var check = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.LARGE_TOOLBAR);
+        //var check = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.LARGE_TOOLBAR);
+        var check = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/selection-check.svg");
         check.halign = Gtk.Align.START;
         check.valign = Gtk.Align.START;
 

@@ -42,8 +42,9 @@ namespace Worker {
             parse_message (source);
         }
 
-        if(post != null)
+        if(post != null){
          post.parse_completed();
+       }
 
          yield;
     }

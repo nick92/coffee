@@ -24,4 +24,4 @@ You'll need the following dependencies:
 ### Install & Run
 
 	sudo ninja install
-	./src/coffee-news
+	./src/com.github.nick92.coffee

@@ -31,6 +31,8 @@ namespace Coffee {
     private CoffeeView articleView = null;
     private Worker.Retriever retriever = null;
 
+    private signal void got_location();
+
     private Gtk.Box box_header;
     private Gtk.Box box_main;
     private Gtk.Button btn_return;
@@ -55,30 +57,40 @@ namespace Coffee {
       _forecast = Forecast.get_default ();
       settings = Settings.Settings.get_default ();
 
+      setup_ui();
+      connect_methods();
+
       if(settings.get_location_bool)
         get_location.begin ();
 
-      setup_ui();
-      connect_methods();
-      this.show_bar ();
+      get_news_feed.begin ();
 
-      get_feeds.begin ();
+      this.show_bar ();
 
       //this.show_bar ();
     }
 
-    public async void get_feeds (){
-      //callback = get_feeds.callback;
-      GLib.Idle.add(this.get_feeds.callback);
-      retriever.run_parser_weather ();
+    public async void get_news_feed (){
+      //GLib.Idle.add(this.get_news_feed.callback);
+      warning("get_news_feed");
       retriever.run_parser_news ();
 
-      yield;
+      if(!settings.get_location_bool)
+        retriever.run_parser_weather ();
+
+      //yield;
+    }
+
+    public async void get_weather_feed (){
+      warning("get_weather_feed");
+      retriever.run_parser_weather ();
     }
 
     private void display_all () {
+      warning(news_loaded.to_string() + weather_loaded.to_string());
       if(news_loaded && weather_loaded)
       {
+        warning("display_all");
         articleView.load_new_html();
         spinner.active = false;
       }
@@ -119,8 +131,8 @@ namespace Coffee {
 
       //if(settings.get_location_bool)
         //get_location.begin ();
-
-      get_feeds.begin();
+      get_weather_feed.begin ();  
+      get_news_feed.begin ();
     }
 
     private void setup_ui (){
@@ -193,6 +205,7 @@ namespace Coffee {
       });
 
       _post.post_add_completed.connect (() => {
+          warning("got posts");
           load_posts();
   		});
 
@@ -200,7 +213,12 @@ namespace Coffee {
           //load_weather();
       });
 
+      this.got_location.connect(() => {
+        get_weather_feed ();
+      });
+
       _forecast.got_forecast.connect (() => {
+          warning("got weather");
           load_weather();
       });
 
@@ -232,7 +250,8 @@ namespace Coffee {
 
     public async void get_location () {
       try {
-          var simple = yield new GClue.Simple ("com.github.nick92.coffee-news", GClue.AccuracyLevel.CITY, null);
+          warning("this.got_location();");
+          var simple = yield new GClue.Simple ("com.github.nick92.coffee", GClue.AccuracyLevel.CITY, null);
 
           simple.notify["location"].connect (() => {
               on_location_updated (simple.location.latitude, simple.location.longitude);
@@ -249,12 +268,14 @@ namespace Coffee {
       if (search_cancellable != null)
           search_cancellable.cancel ();
 
+      //warning("this.got_location();");
       search_cancellable = new GLib.Cancellable ();
       var reverse = new Geocode.Reverse.for_location (new Geocode.Location(latitude, longitude, Geocode.LocationAccuracy.CITY));
       try {
           var place = reverse.resolve ();
           settings.change_setting_string(place.get_area(), settings.location_string);
           settings.change_setting_string(latitude.to_string() +","+ longitude.to_string(), settings.geolocation_string);
+          this.got_location();
       } catch (GLib.Error error) {
           debug (error.message);
       }
