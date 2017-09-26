@@ -1,4 +1,4 @@
-/*!
+coffee-container/*!
  * Start Bootstrap - New Age v4.0.0-beta (https://startbootstrap.com/template-overviews/new-age)
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-new-age/blob/master/LICENSE)
@@ -127,11 +127,11 @@ header.masthead {
     text-align: center; }
     header.masthead .header-content h1 {
       font-size: 30px; }
-  header.masthead .device-container {
+  header.masthead .coffee-container {
     max-width: 325px;
     margin-right: auto;
     margin-left: auto; }
-    header.masthead .device-container .screen img {
+    header.masthead .coffee-container .screen img {
       border-radius: 3px; }
   @media (min-width: 992px) {
     header.masthead {
@@ -144,7 +144,7 @@ header.masthead {
         text-align: left; }
         header.masthead .header-content h1 {
           font-size: 50px; }
-      header.masthead .device-container {
+      header.masthead .coffee-container {
         max-width: 325px; } }
 
 #coffee-img {
@@ -160,6 +160,32 @@ header.masthead {
 
 .mb-5 {
   text-align: center;
+}
+
+.screen-coffee {
+  top: 1.58%;
+  bottom: -11.42%;
+  left: 10.97%;
+  position: absolute;
+  right: -5.03%;
+}
+
+.coffee-mockup {
+  padding-bottom: 201.76%;
+  position: relative;
+  width: 100%;
+}
+
+.coffee {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 section.download {
@@ -190,15 +216,15 @@ section.features .section-heading {
   section.features .section-heading p {
     margin-bottom: 0; }
 
-section.features .device-container,
+section.features .coffee-container,
 section.features .feature-item {
   max-width: 325px;
   margin: 0 auto; }
 
-section.features .device-container {
+section.features .coffee-container {
   margin-bottom: 100px; }
   @media (min-width: 992px) {
-    section.features .device-container {
+    section.features .coffee-container {
       margin-bottom: 0; } }
 
 section.features .feature-item {
@@ -228,6 +254,19 @@ section.cta {
   background-size: cover;
  }
 
+ .release-note {
+   margin: 40px;
+ }
+
+ .release-title {
+   font-weight: bold;
+ }
+
+ .changes {
+   background-color: #fff;
+   padding: 20px;
+ }
+
 section.contact {
   text-align: center;
   background-color: #fff;
@@ -235,7 +274,7 @@ section.contact {
   section.contact h2 {
     margin-top: 0;
     margin-bottom: 25px; }
-    section.contact h2 i {
+    section.contact h3 i {
       color: #dd4b39; }
   section.contact ul.list-social {
     margin-bottom: 0; }

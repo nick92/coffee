@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="shortcut icon" type="image/png" href="img/coffee.ico"/>
 
     <title>Coffee - Get current news and weather</title>
 
@@ -19,9 +20,6 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
-
-    <!-- Plugin CSS -->
-    <link rel="stylesheet" href="device-mockups/device-mockups.css">
 
     <!-- Custom styles for this template -->
     <link href="css/new-age.css" rel="stylesheet">
@@ -47,10 +45,7 @@
               <a class="nav-link js-scroll-trigger" href="#features">Features</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#releases">Releases</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#releases">Github</a>
+              <a class="nav-link js-scroll-trigger" href="#releases">Release</a>
             </li>
           </ul>
         </div>
@@ -64,7 +59,7 @@
             <div class="header-content mx-auto">
               <img src="img/coffee.svg" id="coffee-img" />
               <h1 class="mb-5">Keep up-to-date with current news and weather with Coffee..</h1>
-              <a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Download Now!</a>
+              <a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Download Now</a>
             </div>
           </div>
           <div class="col-lg-5 my-auto">
@@ -75,10 +70,10 @@
                 </div>
               </div>
             </div>-->
-            <div class="device-container">
-              <div class="device-mockup iphone6_plus portrait white">
-                <div class="device">
-                  <div class="screen">
+            <div class="coffee-container">
+              <div class="coffee-mockup">
+                <div class="coffee">
+                  <div class="screen-coffee">
                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
                     <img src="https://i.imgur.com/t44PLJr.png" class="img-fluid" alt="">
                   </div>
@@ -176,7 +171,21 @@
       <div class="cta-content">
         <div class="container">
           <h2>Release Notes</h2>
-          <p>We are currently running in beta without plans to implement</p>
+          <div class="release-note">
+            <h3 class="release-title">Coffee v1.0.7</h3>
+            <h4>Initial Release</h4>
+            <p>We are happy to announce our initial release of Coffee.</p>
+            <div class="changes">
+              <h4>Features</h4>
+              <ul>
+                <li>Select from from 8 different news sources from around the web</li>
+                <li>Automatic location detection for acurate weather reports</li>
+                <li>Weather summary for the days with current conditions</li>
+                <li>5 day forecasts to help with future plans</li>
+                <li>Always-on-top and fixed position display</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="overlay"></div>
@@ -184,8 +193,22 @@
 
     <section class="contact bg-primary" id="contact">
       <div class="container">
-        <h2>Always with
-          <i class="fa fa-heart"></i></h2>
+        <div class="row">
+          <div class="col-lg-4">
+            <h3><i class="icon-wrench text-primary"></i>
+              <a target="_blank" href="https://github.com/nick92/coffee/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20">Report a Bug</a>
+            </h3>
+          </div>
+          <div class="col-lg-4">
+            <h3><i class="icon-rocket text-primary"></i>
+              <a target="_blank" href="https://github.com/nick92/coffee/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement">Change Request</a>
+            </h3>
+          </div>
+          <div class="col-lg-4">
+            <h3><a target="_blank" href="https://github.com/nick92/">Always with</a>
+              <i class="fa fa-heart"></i></h3>
+          </div>
+        </div>
         <!--<ul class="list-inline list-social">
           <li class="list-inline-item social-twitter">
             <a href="#">
@@ -208,8 +231,8 @@
 
     <footer>
       <div class="container">
-        <p>&copy; 2017 Start Bootstrap. All Rights Reserved.</p>
-        <ul class="list-inline">
+        <p>&copy; 2017 Coffee. All Rights Reserved.</p>
+        <!--<ul class="list-inline">
           <li class="list-inline-item">
             <a href="#">Privacy</a>
           </li>
@@ -218,7 +241,7 @@
           </li>
           <li class="list-inline-item">
             <a href="#">FAQ</a>
-          </li>
+          </li>-->
         </ul>
       </div>
     </footer>
