@@ -162,6 +162,7 @@ header.masthead {
   text-align: center;
 }
 
+
 .screen-coffee {
   top: 1.58%;
   bottom: -11.42%;
@@ -170,6 +171,30 @@ header.masthead {
   right: -5.03%;
 }
 
+.ubuntu {
+  background-color: #FF8133;
+  border-color: #FF8133;
+}
+
+.ubuntu:hover {
+  background-color: #FFA34D;
+  border-color: #FF8133;
+}
+.ubuntu:focus {
+  box-shadow: 0 0 0 3px rgba(255, 163, 77,.5);
+}
+
+.well {
+  background-color: #fff;
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+
+.well h3 {
+  font-size: 25px;
+}
 .coffee-mockup {
   padding-bottom: 201.76%;
   position: relative;

@@ -72,7 +72,6 @@ namespace Coffee {
 
     public async void get_news_feed (){
       //GLib.Idle.add(this.get_news_feed.callback);
-      warning("get_news_feed");
       retriever.run_parser_news ();
 
       if(!settings.get_location_bool)
@@ -82,15 +81,12 @@ namespace Coffee {
     }
 
     public async void get_weather_feed (){
-      warning("get_weather_feed");
       retriever.run_parser_weather ();
     }
 
     private void display_all () {
-      warning(news_loaded.to_string() + weather_loaded.to_string());
       if(news_loaded && weather_loaded)
       {
-        warning("display_all");
         articleView.load_new_html();
         spinner.active = false;
       }
@@ -131,7 +127,7 @@ namespace Coffee {
 
       //if(settings.get_location_bool)
         //get_location.begin ();
-      get_weather_feed.begin ();  
+      get_weather_feed.begin ();
       get_news_feed.begin ();
     }
 
@@ -205,7 +201,6 @@ namespace Coffee {
       });
 
       _post.post_add_completed.connect (() => {
-          warning("got posts");
           load_posts();
   		});
 
@@ -218,7 +213,6 @@ namespace Coffee {
       });
 
       _forecast.got_forecast.connect (() => {
-          warning("got weather");
           load_weather();
       });
 
@@ -250,7 +244,6 @@ namespace Coffee {
 
     public async void get_location () {
       try {
-          warning("this.got_location();");
           var simple = yield new GClue.Simple ("com.github.nick92.coffee", GClue.AccuracyLevel.CITY, null);
 
           simple.notify["location"].connect (() => {

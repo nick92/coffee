@@ -93,9 +93,19 @@
         <div class="row">
           <div class="col-md-8 mx-auto">
             <h2 class="section-heading">Download</h2>
-            <p>Our app is available in the elementary AppCenter</p>
+            <p>Our app is available to install on Ubuntu</p>
             <div class="badges">
-              <a class="badge-link" href="https://appcenter.elementary.io/com.github.nick92.coffee"><img src="https://camo.githubusercontent.com/871d091ac50b3807879097bc87daaf236bc390aa/68747470733a2f2f61707063656e7465722e656c656d656e746172792e696f2f62616467652e737667" alt=""></a>
+              <button class="btn btn-primary ubuntu" type="button" data-toggle="collapse" data-target="#collapseUbuntu" aria-expanded="false" aria-controls="collapseUbuntu">
+                Install on Ubuntu
+              </button>
+              <div class="collapse" id="collapseUbuntu">
+                <div class="well">
+                  <h3>Simply run these two lines in the terminal</h3>
+                  <hr>
+                  <p>sudo add-apt-repository ppa:coffee-team/coffee && sudo apt update<p>
+                  <p>sudo apt install com.github.nick92.coffee</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
