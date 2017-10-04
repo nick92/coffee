@@ -140,7 +140,7 @@ namespace Coffee {
       // Move the window to the right of the screen
       this.move(width,0);
       this.set_decorated(false);
-      this.set_keep_above (true);
+      this.set_keep_above (false);
 
       // Sets the default size of a window:
   		this.set_default_size (400, height);
@@ -153,14 +153,16 @@ namespace Coffee {
       spinner.active = true;
 
       btn_setting = new Gtk.Button ();
-      btn_setting.image = new Gtk.Image.from_icon_name ("application-menu-symbolic", Gtk.IconSize.MENU);
+      //btn_setting.image = new Gtk.Image.from_icon_name ("application-menu-symbolic", Gtk.IconSize.MENU);
+      btn_setting.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/preferences-system-symbolic.svg");
       btn_setting.halign = Gtk.Align.END;
       btn_setting.set_relief(Gtk.ReliefStyle.NONE);
 
       coffee_img = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/coffee-news-symbolic.svg");
 
       btn_return = new Gtk.Button ();
-      btn_return.image = new Gtk.Image.from_icon_name ("view-refresh-symbolic", Gtk.IconSize.MENU);
+      //btn_return.image = new Gtk.Image.from_icon_name ("view-refresh-symbolic", Gtk.IconSize.MENU);
+      btn_return.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/view-refresh-symbolic.svg");
       btn_return.halign = Gtk.Align.START;
       btn_return.set_relief(Gtk.ReliefStyle.NONE);
 
