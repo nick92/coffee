@@ -35,7 +35,7 @@ namespace Coffee {
 
     private Gtk.Box box_header;
     private Gtk.Box box_main;
-    private Gtk.Button btn_return;
+    private Gtk.Button btn_close;
     private Gtk.Button btn_setting;
     private Gtk.Image coffee_img;
     private Gtk.EventBox event_box;
@@ -125,9 +125,10 @@ namespace Coffee {
       news_loaded = false;
       weather_loaded = false;
 
-      //if(settings.get_location_bool)
-        //get_location.begin ();
-      get_weather_feed.begin ();
+      if(settings.get_location_bool)
+        get_location.begin ();
+
+      //get_weather_feed.begin ();
       get_news_feed.begin ();
     }
 
@@ -155,23 +156,23 @@ namespace Coffee {
       btn_setting = new Gtk.Button ();
       //btn_setting.image = new Gtk.Image.from_icon_name ("application-menu-symbolic", Gtk.IconSize.MENU);
       btn_setting.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/preferences-system-symbolic.svg");
-      btn_setting.halign = Gtk.Align.END;
+      btn_setting.halign = Gtk.Align.START;
       btn_setting.set_relief(Gtk.ReliefStyle.NONE);
 
       coffee_img = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/coffee-news-symbolic.svg");
 
-      btn_return = new Gtk.Button ();
-      //btn_return.image = new Gtk.Image.from_icon_name ("view-refresh-symbolic", Gtk.IconSize.MENU);
-      btn_return.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/view-refresh-symbolic.svg");
-      btn_return.halign = Gtk.Align.START;
-      btn_return.set_relief(Gtk.ReliefStyle.NONE);
+      btn_close = new Gtk.Button ();
+      //btn_close.image = new Gtk.Image.from_icon_name ("view-refresh-symbolic", Gtk.IconSize.MENU);
+      btn_close.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/window-close-symbolic.svg");
+      btn_close.halign = Gtk.Align.END;
+      btn_close.set_relief(Gtk.ReliefStyle.NONE);
 
       box_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
       //box_header.margin = 2;
       box_header.set_center_widget (coffee_img);
-      box_header.pack_start(btn_return,false, true, 0);
+      box_header.pack_start(btn_setting,false, true, 0);
       box_header.pack_start(spinner,false, true, 0);
-      box_header.pack_end(btn_setting,true, true, 0);
+      box_header.pack_end(btn_close,true, true, 0);
 
       //this.add (event_box);
 
@@ -185,11 +186,12 @@ namespace Coffee {
     }
 
     private void connect_methods(){
-      btn_return.clicked.connect (() => {
-        reload_posts();
+      btn_close.clicked.connect (() => {
+        //reload_posts();
+        this.destroy ();
       });
 
-      /*btn_return.clicked.connect (() => {
+      /*btn_close.clicked.connect (() => {
         if(articleView.can_go_back())
           articleView.go_back();
         else {
@@ -225,8 +227,8 @@ namespace Coffee {
         var key = Gdk.keyval_name (event.keyval).replace ("KP_", "");
 
         switch (key) {
-            case "F4":
-                destroy();
+            case "F5":
+                reload_posts();
 
                 break;
 

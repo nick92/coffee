@@ -1,8 +1,16 @@
-com.github.nick92.coffee (1.0.8) zesty; urgency=medium
+com.github.nick92.coffee (1.0.9) xenial; urgency=medium
 
-  * build snap package for coffee
+  * add close icon to top bar
+  * open links in default browser
 
- -- Nick Wilkins <nickawilkins@hotmail.com>  Wed, 04 Oct 2017 17:38:54 +0100
+ -- Nick Wilkins <nickawilkins@hotmail.com>  Thu, 28 Sep 2017 13:38:54 +0100
+
+com.github.nick92.coffee (1.0.8) xenial; urgency=medium
+
+  * remove warnings from CoffeeBar
+
+ -- Nick Wilkins <nickawilkins@hotmail.com>  Thu, 28 Sep 2017 13:38:54 +0100
+
 
 com.github.nick92.coffee (1.0.7) xenial; urgency=medium
 

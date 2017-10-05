@@ -54,6 +54,9 @@ namespace Coffee {
       //this.zoom_level = 1.6;
       app = GLib.Application.get_default () as CoffeeApp;
       coffee_settings = Settings.Settings.get_default ();
+      //ResponsePolicyDecision navoption = new ResponsePolicyDecision() ;
+
+      //polDecis.ignore();
       try {
           news_html = app.load_from_resource ("/com/github/nick92/Coffee/ui/News.html");
           style_css = load_css();
@@ -63,6 +66,35 @@ namespace Coffee {
 
       } catch (Error e) {
           critical (e.message);
+      }
+
+      decide_policy.connect ((decision, type) => {
+        switch (type) {
+          case WebKit.PolicyDecisionType.NEW_WINDOW_ACTION:
+              if (decision is WebKit.ResponsePolicyDecision) {
+                  launch_browser ((decision as WebKit.ResponsePolicyDecision).request.get_uri ());
+              }
+          break;
+          case WebKit.PolicyDecisionType.RESPONSE:
+              if (decision is WebKit.ResponsePolicyDecision) {
+                  var policy = (WebKit.ResponsePolicyDecision) decision;
+                  launch_browser (policy.request.get_uri ());
+                  return false;
+              }
+          break;
+        }
+        return true;
+      });
+    }
+
+    private void launch_browser (string url) {
+      if (!url.contains ("/embed/")) {
+          try {
+              AppInfo.launch_default_for_uri (url, null);
+          } catch (Error e) {
+              warning ("No app to handle urls: %s", e.message);
+          }
+          stop_loading ();
       }
     }
 

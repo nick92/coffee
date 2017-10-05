@@ -12,6 +12,7 @@
     <file compressed="true">icons/symbol/selection-check.svg</file>
     <file compressed="true">icons/symbol/preferences-system-symbolic.svg</file>
     <file compressed="true">icons/symbol/view-refresh-symbolic.svg</file>
+    <file compressed="true">icons/symbol/window-close-symbolic.svg</file>
     <file compressed="true">icons/news/bbc-sport.png</file>
     <file compressed="true">icons/news/bbc-news.png</file>
     <file compressed="true">icons/news/google-news.png</file>
@@ -22,4 +23,3 @@
     <file compressed="true">icons/news/the-new-york-times.png</file>
   </gresource>
 </gresources>
-
