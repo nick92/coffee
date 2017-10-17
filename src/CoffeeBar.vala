@@ -32,6 +32,7 @@ namespace Coffee {
     private Worker.Retriever retriever = null;
 
     private signal void got_location();
+    private signal void got_location_error();
 
     private Gtk.Box box_header;
     private Gtk.Box box_main;
@@ -43,6 +44,9 @@ namespace Coffee {
 
     private Settings.Settings settings;
     private GLib.Cancellable search_cancellable;
+
+    private Gtk.Revealer location_revealer;
+    private Gtk.SearchEntry location_entry;
 
     private bool weather_loaded = false;
     private bool news_loaded = false;
@@ -81,7 +85,12 @@ namespace Coffee {
     }
 
     public async void get_weather_feed (){
-      retriever.run_parser_weather ();
+      if(settings.geo_location_string != "")
+        retriever.run_parser_weather ();
+      else{
+        weather_loaded = true;
+        location_revealer.set_reveal_child(true);
+      }
     }
 
     private void display_all () {
@@ -134,7 +143,7 @@ namespace Coffee {
 
     private void setup_ui (){
       this.title = "Coffee";
-      var screen = Gdk.Screen.get_default ();
+
       var height = screen.get_height ();
       var width = screen.get_width ();
 
@@ -167,6 +176,15 @@ namespace Coffee {
       btn_close.halign = Gtk.Align.END;
       btn_close.set_relief(Gtk.ReliefStyle.NONE);
 
+      location_entry = new Gtk.SearchEntry ();
+      location_entry.hexpand = true;
+      location_entry.margin_left = 15;
+      //location_entry.activate.connect (() => {compute_location.begin (location_entry.text);});
+
+      location_revealer = new Gtk.Revealer ();
+      location_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
+      location_revealer.add (location_entry);
+
       box_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
       //box_header.margin = 2;
       box_header.set_center_widget (coffee_img);
@@ -178,6 +196,7 @@ namespace Coffee {
 
       box_main = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
   		box_main.pack_start (box_header, false, false, 0);
+      box_main.pack_start (location_revealer, false, false, 0);
   		box_main.pack_start (articleView, true, true, 0);
 
       event_box = new Gtk.EventBox ();
@@ -202,6 +221,7 @@ namespace Coffee {
       btn_setting.clicked.connect (() => {
         var settings_window = new Settings.SettingsWindow();
         settings_window.show_all();
+        //location_revealer.set_reveal_child (!location_revealer.child_revealed);
       });
 
       _post.post_add_completed.connect (() => {
@@ -248,7 +268,7 @@ namespace Coffee {
 
     public async void get_location () {
       try {
-          var simple = yield new GClue.Simple ("com.github.nick92.coffee", GClue.AccuracyLevel.CITY, null);
+          var simple = yield new GClue.Simple ("com.github.nick92.coffee", GClue.AccuracyLevel.EXACT, null);
 
           simple.notify["location"].connect (() => {
               on_location_updated (simple.location.latitude, simple.location.longitude);
@@ -257,6 +277,8 @@ namespace Coffee {
           on_location_updated (simple.location.latitude, simple.location.longitude);
       } catch (Error e) {
           debug ("Failed to connect to GeoClue2 service: %s", e.message);
+          settings.change_setting_string("Location not available", settings.location_string);
+          this.got_location();
           return;
       }
     }
@@ -265,9 +287,8 @@ namespace Coffee {
       if (search_cancellable != null)
           search_cancellable.cancel ();
 
-      //warning("this.got_location();");
       search_cancellable = new GLib.Cancellable ();
-      var reverse = new Geocode.Reverse.for_location (new Geocode.Location(latitude, longitude, Geocode.LocationAccuracy.CITY));
+      var reverse = new Geocode.Reverse.for_location (new Geocode.Location(latitude, longitude, Geocode.LocationAccuracy.REGION));
       try {
           var place = reverse.resolve ();
           settings.change_setting_string(place.get_area(), settings.location_string);

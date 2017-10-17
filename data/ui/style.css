@@ -9,6 +9,7 @@ h1 {
   border-bottom: 1px #e0e0e0 solid;
   padding-bottom: 12px;
   padding-right: 20px;
+  padding-left: 6px;
   width: 87%;
 }
 
@@ -19,7 +20,7 @@ h1 a {
 
 h1 a:hover {
   color: #00B297;
-} 
+}
 
 h2 {
   font-size: 1em;
@@ -132,9 +133,7 @@ weather {
   background-color: #ffffff;
   box-shadow: 1px 1px 1px #d3d3d3;
   padding: 5px;
-  padding-left: 15px;
   display: block;
-  border-radius: 2px;
 }
 
 .img_news {
@@ -177,6 +176,7 @@ breaknews {
 
 #weather_today_img{
   width: 140px;
+  padding-left: 4px;
 }
 
 forecast {
@@ -213,7 +213,7 @@ forecast {
 }
 
 .weather_forecast_img {
-  width: 40px;
+  height: 40px;
   margin: 0 auto;
   display: block;
 }
@@ -257,5 +257,3 @@ forecast {
 #footer a:hover {
   text-decoration: underline;
 }
-
-
