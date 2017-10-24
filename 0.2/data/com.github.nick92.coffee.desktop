@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Coffee
-Exec=com.github.nick92.coffee
-Icon=com.github.nick92.coffee
-Terminal=false
-Type=Application
-StartupNotify=true
-Categories=Network;Feed;News;GNOME;GTK;
-Keywords=News;Feed;
