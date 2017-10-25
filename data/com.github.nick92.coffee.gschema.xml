@@ -1,45 +1,5 @@
 <schemalist>
 	<schema path="/com/github/nick92/coffee/" id="com.github.nick92.coffee" gettext-domain="coffee">
-		<key name="bbc-news" type="b">
-            <default>true</default>
-            <summary>Use BBC News feed</summary>
-            <description></description>
-        </key>
-		<key name="google-news" type="b">
-            <default>false</default>
-            <summary>Use Google News feed</summary>
-            <description></description>
-        </key>
-		<key name="bbc-sport" type="b">
-            <default>false</default>
-            <summary>Use BBC Sport feed</summary>
-            <description></description>
-        </key>
-		<key name="engadget" type="b">
-            <default>true</default>
-            <summary>Use engadget feed</summary>
-            <description></description>
-        </key>
-		<key name="the-guardian-uk" type="b">
-            <default>false</default>
-            <summary>Use Guardian UK feed</summary>
-            <description></description>
-        </key>
-		<key name="hacker-news" type="b">
-            <default>false</default>
-            <summary>Use Hacker News feed</summary>
-            <description></description>
-        </key>
-		<key name="the-next-web" type="b">
-            <default>false</default>
-            <summary>Use Next Web feed</summary>
-            <description></description>
-        </key>
-		<key name="the-new-york-times" type="b">
-            <default>true</default>
-            <summary>Use New York Times feed</summary>
-            <description></description>
-        </key>
 		<key name="weather" type="b">
             <default>true</default>
             <summary>Enable weather widget</summary>
@@ -71,12 +31,12 @@
             <description></description>
         </key>
 		<key name="news-sources" type="s">
-            <default>""</default>
-            <summary>News sources not being used</summary>
+            <default>"bbc-news;bbc-sport;the-guardian-uk;the-next-web;the-new-york-times;google-news;engadget;wired-de;the-verge;independent;"</default>
+            <summary>News sources in news list but not used in application</summary>
             <description></description>
         </key>
 		<key name="news-sources-enabled" type="s">
-            <default>""</default>
+            <default>"bbc-news;bbc-sport;the-guardian-uk;the-next-web;the-new-york-times;google-news;"</default>
             <summary>News sources currently being used</summary>
             <description></description>
         </key>

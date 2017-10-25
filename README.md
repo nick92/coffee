@@ -1,10 +1,10 @@
 # Coffee
 
-Keep up-to-date with news and weather with Coffee.
+Keep up-to-date with current news and weather with Coffee.
 
 ## Download 
 
-You download and install in Ubuntu from the Coffee site
+Download and install from the Coffee site
 
 [Download](https://nick92.github.io/coffee/#download)
 

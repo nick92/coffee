@@ -23,6 +23,8 @@ namespace Settings {
         flowboxchild,
         GtkTreeView {
             font-size: 12px;
+            padding-top: 2px;
+            padding-bottom: 2px;
         }
     """;
 
@@ -35,6 +37,7 @@ namespace Settings {
     		settings = Settings.get_default ();
 
     		var scrolled = new Gtk.ScrolledWindow (null, null);
+    		scrolled.expand = true;
 
     		var provider = new Gtk.CssProvider ();
 	        try {
@@ -162,14 +165,10 @@ namespace Settings {
 
 					// The View:
 					view = new Gtk.TreeView.with_model (list_store);
-
-					//view.set_search_entry(news_search_entry);
-					//view.set_search_column(1);
-
+					view.show_expanders = true;
 					view.row_activated.connect(news_row_activated);
-					
 		            //box.pack_start (news_search_entry, false, true, 0);
-		            box.pack_start (view, false, true, 0);
+		            //box.pack_start (view, false, true, 0);
 
 		            //Gtk.CellRendererText cell = new Gtk.CellRendererText ();
 					view.insert_column_with_attributes (-1, "Sources", new Gtk.CellRendererText (), "text", 1);
@@ -178,7 +177,7 @@ namespace Settings {
 		            critical ("Failed to load wallpaper thumbnail: %s", e.message);
 		        }
 
-		        scrolled.add(box);
+		        scrolled.add(view);
 				
 			}
 			add(scrolled);
