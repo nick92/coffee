@@ -23,6 +23,9 @@ namespace Settings {
       private Settings settings;
       private Gtk.Grid grid;
       private Gtk.Stack stack;
+      private NewsGrid news_grid;
+      private LocationGrid location_grid;
+      private Gtk.Button button_add;
 
 
       public SettingsWindow () {
@@ -41,18 +44,53 @@ namespace Settings {
             grid = new Gtk.Grid ();
             grid.margin = 12;
 
+            news_grid = new NewsGrid ();
+            location_grid = new LocationGrid ();
+            button_add = new Gtk.Button ();
+
             stack = new Gtk.Stack ();
             //stack.add_titled (new AboutGrid (), "general", "General");
-            stack.add_titled (new NewsGrid (), "news", "News");
-            stack.add_titled (new LocationGrid (), "location", "Location");
+            stack.add_titled (news_grid, "news", "News");
+            stack.add_titled (location_grid, "location", "Location");
 
             var stack_switcher = new Gtk.StackSwitcher ();
             stack_switcher.stack = stack;
             stack_switcher.halign = Gtk.Align.CENTER;
             stack_switcher.margin = 24;
 
+            stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+            
+            stack_switcher.event.connect(() => {
+              if(stack.visible_child == location_grid)
+              {
+                stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+                button_add.visible = false;
+              }
+              if(stack.visible_child == news_grid)
+              {
+                stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+                button_add.visible = true;
+              }
+              
+              return false;
+            });
+
+            button_add.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/list-add-symbolic.svg");
+            button_add.halign = Gtk.Align.END;
+            button_add.set_tooltip_text ("Add news source");
+            button_add.set_relief(Gtk.ReliefStyle.NONE);
+
+            button_add.clicked.connect(() => {
+            	var news_sources_window = new NewsSourcesList();
+        		  news_sources_window.show_all();
+        		  news_sources_window.news_added.connect(() => {
+        			 news_grid.refresh_news_items();
+    			    });
+      	    });
+
             grid.attach (stack_switcher, 0, 0, 1, 1);
-            grid.attach (stack, 0, 1, 1, 1);
+            grid.attach (button_add, 0, 1, 1, 1); 
+            grid.attach (stack, 0, 2, 1, 1);
         }
         grid.show ();
 

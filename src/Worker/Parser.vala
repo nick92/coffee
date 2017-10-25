@@ -30,7 +30,7 @@ namespace Worker {
     public Parser (){
       post = Coffee.Post.get_default();
       settings = Settings.Settings.get_default ();
-      intNews = 10 / settings.get_news_count();
+      intNews = 15 / settings.get_news_count();
     }
 
     public void parse_message (Soup.Message message, string source){
@@ -131,30 +131,30 @@ namespace Worker {
         //clear-day, clear-night, rain, snow, sleet, wind, fog, cloudy, partly-cloudy-day, or partly-cloudy-night
         switch (weather_icon) {
           case "clear-day":
-            return "https://i.imgur.com/MnNA9E4.png";
+            return "https://i.imgur.com/r083aDL.png";
           case "clear-night":
-            return "https://i.imgur.com/eOA9sLo.png";
+            return "https://i.imgur.com/PDSgawm.png";
           case "rain":
-            return "https://i.imgur.com/KthJH0z.png";
+            return "https://i.imgur.com/kBB5AYF.png";
           case "snow":
-            return "https://i.imgur.com/Nl14m03.png";
+            return "https://i.imgur.com/e8oIEco.png";
           case "sleet":
-            return "https://i.imgur.com/awXUxUE.png";
+            return "https://i.imgur.com/zHVmfxD.png";
           case "wind":
-            return "https://i.imgur.com/MnNA9E4.png";
+            return "https://i.imgur.com/S8Ocs4Z.png";
           case "fog":
-            return "https://i.imgur.com/MnNA9E4.png";
+            return "https://i.imgur.com/4VFO9y0.png";
           case "cloudy":
-            return "https://i.imgur.com/ekp2WBm.png";
+            return "https://i.imgur.com/Gshutca.png";
           case "partly-cloudy-day":
-            return "https://i.imgur.com/SeLfWTW.png";
+            return "https://i.imgur.com/KczFfy0.png";
           case "partly-cloudy-night":
             if(type=="forecast")
-              return "https://i.imgur.com/SeLfWTW.png";
+              return "https://i.imgur.com/KczFfy0.png";
             else
-              return "https://i.imgur.com/3wPKyGW.png";
+              return "https://i.imgur.com/ZYjrxaA.png";
           default:
-            return "https://i.imgur.com/SeLfWTW.png";
+            return "https://i.imgur.com/KczFfy0.png";
         }
     }
 

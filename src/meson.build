@@ -9,6 +9,7 @@ sources = [
     'Worker/Parser.vala',
     'Worker/Sources.vala',
     'Settings/SettingsWindow.vala',
+    'Settings/NewsSourcesList.vala',
     'Settings/Settings.vala',
     'Settings/NewsGrid.vala',
     'Settings/LocationGrid.vala',

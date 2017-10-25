@@ -20,76 +20,65 @@ using Geocode;
 namespace Settings {
   public class NewsGrid : Grid {
 
-    private Gtk.Switch _switch_google_news;
-    private Gtk.Switch _switch_bbc_news;
-    private Gtk.Switch _switch_bbc_sport;
     private NewsContainer news_sources = null;
-    private Gtk.FlowBox wallpaper_view;
+    private Gtk.FlowBox news_view;
     private NewsContainer news_item;
 
     private Settings settings;
 
     public NewsGrid () {
       settings = Settings.get_default ();
-      _switch_google_news = new Gtk.Switch ();
-      _switch_bbc_sport = new Gtk.Switch ();
-      _switch_bbc_news = new Gtk.Switch ();
 
-      if(settings.bbc_news_bool)
-        _switch_bbc_news.active = true;
-      if(settings.google_news_bool)
-        _switch_google_news.active = true;
-      if(settings.bbc_sport_bool)
-        _switch_bbc_sport.active = true;
-
-      wallpaper_view = new Gtk.FlowBox ();
-      wallpaper_view.activate_on_single_click = true;
-      wallpaper_view.get_style_context ().add_class (Gtk.STYLE_CLASS_VIEW);
-      wallpaper_view.homogeneous = true;
+      news_view = new Gtk.FlowBox ();
+      news_view.activate_on_single_click = true;
+      news_view.get_style_context ().add_class (Gtk.STYLE_CLASS_VIEW);
+      news_view.homogeneous = true;
       //wallpaper_view.selection_mode = Gtk.SelectionMode.SINGLE;
-      wallpaper_view.child_activated.connect (update_checked_wallpaper);
+      news_view.child_activated.connect (update_checked_wallpaper);
 
       var scrolled = new Gtk.ScrolledWindow (null, null);
       scrolled.expand = true;
-      scrolled.add (wallpaper_view);
+      //scrolled.min_content_height = 400;
+      scrolled.add (news_view);
 
       foreach (string source in settings.get_news_sources()) {
         news_item = new NewsContainer (source, settings.get_news_source_bool (source));
-        wallpaper_view.add (news_item);
+        news_view.add (news_item);
       }
 
-      news_item.show_all ();
+      //news_item.show_all ();
       this.attach(scrolled, 1, 0, 1, 1);
-      connect_events();
+      //connect_events();
+      this.show_all();
     }
 
     private void update_checked_wallpaper (Gtk.FlowBox box, Gtk.FlowBoxChild child) {
-        var children = (NewsContainer) wallpaper_view.get_selected_children ().data;
+        var children = (NewsContainer) news_view.get_selected_children ().data;
 
         if(children.checked)
           children.checked = false;
         else
           children.checked = true;
 
-        settings.change_setting_bool(children.checked, children.uri);
+        settings.set_news_enabled(children.checked, children.uri);
 
         news_sources = children;
     }
 
-    private void connect_events (){
+    public void refresh_news_items (){
+      refresh_list();
+      foreach (string source in settings.get_news_sources()) {
+        news_item = new NewsContainer (source, settings.get_news_source_bool (source));
+        news_view.add (news_item);
+      }
+      this.show_all();
+    }
 
-      _switch_google_news.notify["active"].connect (() => {
-        settings.change_setting_bool(_switch_google_news.active, settings.google_news_string);
-      });
-
-      _switch_bbc_news.notify["active"].connect (() => {
-        settings.change_setting_bool(_switch_bbc_news.active, settings.bbc_news_string);
-      });
-
-      _switch_bbc_sport.notify["active"].connect (() => {
-        settings.change_setting_bool(_switch_bbc_sport.active, settings.bbc_sport_string);
-      });
-
+    private void refresh_list () {
+      foreach(Widget child in news_view.get_children ())
+      {
+        news_view.remove(child);
+      }
     }
   }
 }

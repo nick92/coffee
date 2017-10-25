@@ -93,10 +93,13 @@
         <div class="row">
           <div class="col-md-8 mx-auto">
             <h2 class="section-heading">Download</h2>
-            <p>Our app is available to install on Ubuntu</p>
+            <p>Our app is available to install on the follow platforms</p>
             <div class="badges">
               <button class="btn btn-primary ubuntu" type="button" data-toggle="collapse" data-target="#collapseUbuntu" aria-expanded="false" aria-controls="collapseUbuntu">
                 Install on Ubuntu
+              </button>
+              <button class="btn btn-primary arch" type="button" data-toggle="collapse" data-target="#collapseArch" aria-expanded="false" aria-controls="collapseArch">
+                Install on Arch
               </button>
               <div class="collapse" id="collapseUbuntu">
                 <div class="well">
@@ -106,6 +109,12 @@
                   <p>sudo apt install com.github.nick92.coffee</p>
                 </div>
               </div>
+              <div class="collapse" id="collapseArch">
+                <div class="well">
+                  <h3>Run this in terminal (with Yaourt)</h3>
+                  <hr>
+                  <p>sudo yaourt coffee-git<p>
+                </div>
             </div>
           </div>
         </div>
@@ -144,7 +153,7 @@
                   <div class="feature-item">
                     <i class="icon-globe text-primary"></i>
                     <h3>News Sources</h3>
-                    <p class="text-muted">Choose from a selection of news sources, provided by <a href="https://newsapi.org/">News API</a>. More can be added on request</p>
+                    <p class="text-muted">Choose from 44 news sources from around the web, provided by <a href="https://newsapi.org/">News API</a>. More can be added on request</p>
                   </div>
                 </div>
                 <div class="col-lg-6">
@@ -181,6 +190,20 @@
       <div class="cta-content">
         <div class="container">
           <h2>Release Notes</h2>
+          <div class="release-note">
+            <h3 class="release-title">v1.1.0</h3>
+            <h4>A couple of bug fixes</h4>
+            <p>35 news sources added with a tree view selection based on categories</p>
+            <div class="changes">
+              <h4>Features</h4>
+              <ul>
+                  <li>35 news sources added to list: Wired (de), The Verge, Independent, Metro, Reddit-r-all, ABC News AU, Al Jazeera, Bild, CNN, The Lad Bible, The Washington Post, Time, Ars Technica, Focus, to name a few ...</li>
+        				  <li>New window to browse sources via categories</li>
+        				  <li>Fix for weather forecast icon displaying in different heights</li>
+                  <li>Fix news reload issue when pressing F5 with automatic geolocation turned on</li>
+              </ul>
+            </div>
+          </div>
           <div class="release-note">
             <h3 class="release-title">v1.0.9</h3>
             <h4>A couple of bug fixes</h4>

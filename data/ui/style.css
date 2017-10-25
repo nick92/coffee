@@ -132,7 +132,7 @@ weather {
   word-wrap: break-word;
   background-color: #ffffff;
   box-shadow: 1px 1px 1px #d3d3d3;
-  padding: 5px;
+  padding: 10px;
   display: block;
 }
 
@@ -213,8 +213,9 @@ forecast {
 }
 
 .weather_forecast_img {
-  height: 40px;
+  width: 45px;
   margin: 0 auto;
+  padding-bottom: 5px;
   display: block;
 }
 
@@ -223,7 +224,7 @@ forecast {
 }
 
 .forecast_container {
-  width: 71px;
+  width: 80px;
   border-right: 1px #e0e0e0 dashed;
   padding-right: 2px;
   padding-left: 2px;
