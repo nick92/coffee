@@ -31,12 +31,12 @@
             <description></description>
         </key>
 		<key name="news-sources" type="s">
-            <default>"bbc-news;bbc-sport;the-guardian-uk;the-next-web;the-new-york-times;google-news;engadget;wired-de;the-verge;independent;"</default>
+            <default>"bbc-news;bbc-sport;the-guardian-uk;the-next-web;the-new-york-times;google-news;engadget;"</default>
             <summary>News sources in news list but not used in application</summary>
             <description></description>
         </key>
 		<key name="news-sources-enabled" type="s">
-            <default>"bbc-news;bbc-sport;the-guardian-uk;the-next-web;the-new-york-times;google-news;"</default>
+            <default>"bbc-news;bbc-sport;the-guardian-uk;engadget;the-next-web;"</default>
             <summary>News sources currently being used</summary>
             <description></description>
         </key>

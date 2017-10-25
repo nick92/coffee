@@ -93,91 +93,22 @@ namespace Settings {
       if(news_sources_enabled == null)
         news_sources_enabled = get_news_sources_enabled ();
 
-      /*if(google_news_bool)
-        news_sources.add(Worker.Sources.GOOGLE_NEWS);
-      if(bbc_news_bool)
-        news_sources.add(Worker.Sources.BBC_NEWS);
-      if(bbc_sport_bool)
-        news_sources.add(Worker.Sources.BBC_SPORT);
-      if(engadget_bool)
-        news_sources.add(Worker.Sources.ENGADGET);
-      if(guardian_bool)
-        news_sources.add(Worker.Sources.GUARDIAN);
-      if(hacker_news_bool)
-        news_sources.add(Worker.Sources.HACKER_NEWS);
-      if(next_web_bool)
-        news_sources.add(Worker.Sources.NEXT_WEB_NEWS);
-      if(new_york_times_bool)
-        news_sources.add(Worker.Sources.NEW_YORK_TIMES);*/
-
       List<int> ints = get_random_int(news_sources_enabled.size);
+      int v = 0;
 
-      foreach (int v in ints) {
-        if(news_sources_enabled.contains(Worker.Sources.GOOGLE_NEWS))
-        {
-          news_sources_enabled.remove(Worker.Sources.GOOGLE_NEWS);
-          news_sources_enabled.insert(v, Worker.Sources.GOOGLE_NEWS);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.BBC_NEWS))
-        {
-          news_sources_enabled.remove(Worker.Sources.BBC_NEWS);
-          news_sources_enabled.insert(v, Worker.Sources.BBC_NEWS);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.BBC_SPORT))
-        {
-          news_sources_enabled.remove(Worker.Sources.BBC_SPORT);
-          news_sources_enabled.insert(v, Worker.Sources.BBC_SPORT);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.ENGADGET))
-        {
-          news_sources_enabled.remove(Worker.Sources.ENGADGET);
-          news_sources_enabled.insert(v, Worker.Sources.ENGADGET);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.GUARDIAN))
-        {
-          news_sources_enabled.remove(Worker.Sources.GUARDIAN);
-          news_sources_enabled.insert(v, Worker.Sources.GUARDIAN);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.HACKER_NEWS))
-        {
-          news_sources_enabled.remove(Worker.Sources.HACKER_NEWS);
-          news_sources_enabled.insert(v, Worker.Sources.HACKER_NEWS);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.NEXT_WEB_NEWS))
-        {
-          news_sources_enabled.remove(Worker.Sources.NEXT_WEB_NEWS);
-          news_sources_enabled.insert(v, Worker.Sources.NEXT_WEB_NEWS);
-        }
-        else if(news_sources_enabled.contains(Worker.Sources.NEW_YORK_TIMES))
-        {
-          news_sources_enabled.remove(Worker.Sources.NEW_YORK_TIMES);
-          news_sources_enabled.insert(v, Worker.Sources.NEW_YORK_TIMES);
-        }
+      foreach (int i in ints) {
+        string news_item_new = news_sources_enabled.get(v);
+
+        news_sources_enabled.remove_at(v);
+        news_sources_enabled.insert(i, news_item_new);
+
+        v ++;
       }
 
       return news_sources_enabled;
     }
 
     public bool get_news_source_bool (string news_item){
-        /*switch(news_item)
-        {
-          case Worker.Sources.GOOGLE_NEWS:
-            return google_news_bool;
-          case Worker.Sources.BBC_NEWS:
-            return bbc_news_bool;
-          case Worker.Sources.BBC_SPORT:
-            return bbc_sport_bool;
-          case Worker.Sources.ENGADGET:
-            return engadget_bool;
-          case Worker.Sources.GUARDIAN:
-            return guardian_bool;
-          case Worker.Sources.HACKER_NEWS:
-            return hacker_news_bool;
-          case Worker.Sources.NEXT_WEB_NEWS:
-            return next_web_bool;
-          case Worker.Sources.NEW_YORK_TIMES:
-            return new_york_times_bool;
-        }*/
         if(news_sources_enabled != null)
           return news_sources_enabled.contains(news_item);
         else  
@@ -186,16 +117,6 @@ namespace Settings {
 
     public Gee.ArrayList<string> get_news_sources () {
       news_sources = new Gee.ArrayList<string>();
-
-      /*news_sources.add(Worker.Sources.GOOGLE_NEWS);
-      news_sources.add(Worker.Sources.BBC_NEWS);
-      news_sources.add(Worker.Sources.BBC_SPORT);
-      news_sources.add(Worker.Sources.ENGADGET);
-      news_sources.add(Worker.Sources.GUARDIAN);
-      news_sources.add(Worker.Sources.HACKER_NEWS);
-      news_sources.add(Worker.Sources.NEXT_WEB_NEWS);
-      news_sources.add(Worker.Sources.NEW_YORK_TIMES);*/
-
       string[] sources = news_sources_string.split (";");
 
       foreach (unowned string news in sources) {
@@ -208,16 +129,6 @@ namespace Settings {
 
     public Gee.ArrayList<string> get_news_sources_enabled () {
       news_sources_enabled = new Gee.ArrayList<string>();
-
-      /*news_sources.add(Worker.Sources.GOOGLE_NEWS);
-      news_sources.add(Worker.Sources.BBC_NEWS);
-      news_sources.add(Worker.Sources.BBC_SPORT);
-      news_sources.add(Worker.Sources.ENGADGET);
-      news_sources.add(Worker.Sources.GUARDIAN);
-      news_sources.add(Worker.Sources.HACKER_NEWS);
-      news_sources.add(Worker.Sources.NEXT_WEB_NEWS);
-      news_sources.add(Worker.Sources.NEW_YORK_TIMES);*/
-
       string[] sources_enabled = news_sources_enabled_string.split (";");
 
       foreach (unowned string news_en in sources_enabled) {

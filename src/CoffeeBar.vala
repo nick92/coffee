@@ -50,6 +50,7 @@ namespace Coffee {
 
     private bool weather_loaded = false;
     private bool news_loaded = false;
+    private bool reloading = false;
 
     public SourceFunc callback;
 
@@ -70,15 +71,13 @@ namespace Coffee {
       get_news_feed.begin ();
 
       this.show_bar ();
-
-      //this.show_bar ();
     }
 
     public async void get_news_feed (){
       //GLib.Idle.add(this.get_news_feed.callback);
       retriever.run_parser_news ();
 
-      if(!settings.get_location_bool)
+      if(!settings.get_location_bool || reloading)
         retriever.run_parser_weather ();
 
       //yield;
@@ -98,6 +97,7 @@ namespace Coffee {
       {
         articleView.load_new_html();
         spinner.active = false;
+        reloading = false;
       }
     }
 
@@ -133,12 +133,15 @@ namespace Coffee {
       articleView.reload_articles();
       news_loaded = false;
       weather_loaded = false;
+      reloading = true;
 
-      if(settings.get_location_bool)
-        get_location.begin ();
+      //if(settings.get_location_bool)
+        //get_location.begin ();
 
       //get_weather_feed.begin ();
       get_news_feed.begin ();
+
+
     }
 
     private void setup_ui (){
@@ -279,7 +282,7 @@ namespace Coffee {
           on_location_updated (simple.location.latitude, simple.location.longitude);
       } catch (Error e) {
           debug ("Failed to connect to GeoClue2 service: %s", e.message);
-          settings.change_setting_string("Location not available", settings.location_string);
+          settings.change_setting_string("N/A - Go to Settings", settings.location_string);
           this.got_location();
           return;
       }
@@ -293,11 +296,25 @@ namespace Coffee {
       var reverse = new Geocode.Reverse.for_location (new Geocode.Location(latitude, longitude, Geocode.LocationAccuracy.REGION));
       try {
           var place = reverse.resolve ();
-          settings.change_setting_string(place.get_area(), settings.location_string);
+          
+          if(place.get_area() != null )
+            settings.change_setting_string(place.get_area(), settings.location_string);
+          else if(place.get_name() != null ) 
+            settings.change_setting_string(place.get_name(), settings.location_string);
+          else if(place.get_town() != null ) 
+            settings.change_setting_string(place.get_town(), settings.location_string);
+          else if(place.get_street() != null ) 
+            settings.change_setting_string(place.get_street(), settings.location_string);
+          else if (place.get_county() != null ) 
+            settings.change_setting_string(place.get_county(), settings.location_string);
+          else
+            settings.change_setting_string(place.get_country(), settings.location_string);
+
           settings.change_setting_string(latitude.to_string() +","+ longitude.to_string(), settings.geolocation_string);
-          this.got_location();
+          this.got_location();  
       } catch (GLib.Error error) {
           debug (error.message);
+          this.got_location();
       }
     }
 
