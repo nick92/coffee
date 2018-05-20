@@ -24,7 +24,7 @@ namespace Coffee {
   public class CoffeeBar : Window {
 
     private Gee.ArrayList<Post> _posts = null;
-    private Gee.ArrayList<Forecast> _days = null;
+    private Gee.ArrayList<Weather> _days = null;
     private Post _post = null;
     private Weather _weather = null;
     private Forecast _forecast = null;
@@ -41,6 +41,16 @@ namespace Coffee {
     private Gtk.Image coffee_img;
     private Gtk.EventBox event_box;
     private Gtk.Spinner spinner;
+    private Timer timer;
+
+    private Views.NewsView news_view;
+    private Views.WeatherView weather_view;
+    //private Widgets.Selector switcher;
+
+    private Widgets.Modality modality;
+    public  Gtk.Stack stack;
+    public  Widgets.Selector view_selector;
+    private Gtk.Revealer view_selector_revealer;
 
     private Settings.Settings settings;
     private GLib.Cancellable search_cancellable;
@@ -54,9 +64,13 @@ namespace Coffee {
 
     public SourceFunc callback;
 
+    ulong microseconds;
+	  double seconds;
+
     public CoffeeBar (){
+      timer = new Timer ();
       retriever = new Worker.Retriever ();
-      articleView = new CoffeeView ();
+      //articleView = new CoffeeView ();
       _post = Post.get_default ();
       _weather = Weather.get_default ();
       _forecast = Forecast.get_default ();
@@ -65,22 +79,32 @@ namespace Coffee {
       setup_ui();
       connect_methods();
 
-      if(settings.get_location_bool)
-        get_location.begin ();
+      //if(settings.get_location_bool)
+        //get_location.begin ();
 
-      get_news_feed.begin ();
+      get_news_feed ();
 
       this.show_bar ();
     }
 
-    public async void get_news_feed (){
+    public void get_news_feed (){
       //GLib.Idle.add(this.get_news_feed.callback);
-      retriever.run_parser_news ();
+      new Thread<void*> ("get_news", () => {
+        //retriever.create_fake_news ();
+        retriever.run_parser_news ();
+  	    debug ("Got News at: %s s\n", timer.elapsed (out microseconds).to_string ());
+        return null;
+      });
+
 
       if(!settings.get_location_bool || reloading)
-        retriever.run_parser_weather ();
-
-      //yield;
+      {
+        new Thread<void*> ("get_weather", () => {
+          retriever.run_parser_weather ();
+    	    debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
+          return null;
+        });
+      }
     }
 
     public async void get_weather_feed (){
@@ -95,7 +119,7 @@ namespace Coffee {
     private void display_all () {
       if(news_loaded && weather_loaded)
       {
-        articleView.load_new_html();
+        //articleView.load_new_html();
         spinner.active = false;
         reloading = false;
       }
@@ -106,22 +130,34 @@ namespace Coffee {
         _posts = _post.get_posts ();
 
         foreach (var post in _posts) {
-            articleView.post = post;
+            news_view.add_post (post);
         }
+
+        debug ("Added all posts at : %s s\n", timer.elapsed (out microseconds).to_string ());
+
         news_loaded = true;
         display_all ();
       }
     }
 
     private void load_weather() {
-      if(_forecast.get_count () > 0){
-        _days = _forecast.get_forecast ();
+      if(_weather.get_forecast_count () > 0){
+        _days = _weather.get_forecast ();
+
+        /*foreach (var day in _days) {
+            articleView.forecast = day;
+        }*/
 
         foreach (var day in _days) {
-            articleView.forecast = day;
+            weather_view.add_weather (day);
         }
       }
-      articleView.weather = _weather;
+
+      //weather_view.add_current_weather (_weather);
+
+      debug ("Added all weather at : %s s\n", timer.elapsed (out microseconds).to_string ());
+
+      //articleView.weather = _weather;
       weather_loaded = true;
       display_all ();
     }
@@ -130,18 +166,11 @@ namespace Coffee {
       spinner.active = true;
       _post.clear_posts();
       _forecast.clear_forecast ();
-      articleView.reload_articles();
+      //articleView.reload_articles();
       news_loaded = false;
       weather_loaded = false;
       reloading = true;
-
-      //if(settings.get_location_bool)
-        //get_location.begin ();
-
-      //get_weather_feed.begin ();
-      get_news_feed.begin ();
-
-
+      get_news_feed ();
     }
 
     private void setup_ui (){
@@ -158,7 +187,8 @@ namespace Coffee {
       // Sets the default size of a window:
   		this.set_default_size (400, height);
   		this.hide_titlebar_when_maximized = false;
-  		this.destroy.connect (() => {
+
+      this.destroy.connect (() => {
         Gtk.main_quit ();
   		});
 
@@ -179,7 +209,7 @@ namespace Coffee {
       btn_close.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/window-close-symbolic.svg");
       btn_close.halign = Gtk.Align.END;
       btn_close.set_relief(Gtk.ReliefStyle.NONE);
-      btn_close.set_tooltip_text ("Close Coffee");
+      btn_close.set_tooltip_text ("Close");
 
       location_entry = new Gtk.SearchEntry ();
       location_entry.hexpand = true;
@@ -190,29 +220,55 @@ namespace Coffee {
       location_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
       location_revealer.add (location_entry);
 
+      stack = new Gtk.Stack ();
+      stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+
+      view_selector = new Widgets.Selector (Gtk.Orientation.HORIZONTAL);
+      view_selector.margin_top = 6;
+      view_selector.margin_bottom = 6;
+      view_selector_revealer = new Gtk.Revealer ();
+      view_selector_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_RIGHT;
+      view_selector_revealer.add (view_selector);
+      this.view_selector.selected = 0;
+
       box_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
       //box_header.margin = 2;
-      box_header.set_center_widget (coffee_img);
+      box_header.set_center_widget (view_selector_revealer);
       box_header.pack_start(btn_setting,false, true, 0);
       box_header.pack_start(spinner,false, true, 0);
       box_header.pack_end(btn_close,true, true, 0);
 
+      news_view = new Views.NewsView ();
+      weather_view = new Views.WeatherView ();
       //this.add (event_box);
+
+      stack.add_named (news_view, "news");
+      stack.add_named (weather_view, "weather");
 
       box_main = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
   		box_main.pack_start (box_header, false, false, 0);
       box_main.pack_start (location_revealer, false, false, 0);
-  		box_main.pack_start (articleView, true, true, 0);
+  		box_main.pack_start (view_selector_revealer, false, false, 0);
+      box_main.pack_start (stack, true, true, 0);
 
       event_box = new Gtk.EventBox ();
       event_box.add (box_main);
   		this.add (event_box);
+
+      set_modality ((Widgets.Modality) view_selector.selected);
     }
 
     private void connect_methods(){
       btn_close.clicked.connect (() => {
-        //reload_posts();
-        this.destroy ();
+        //if (main_window != null) {
+            clear_tmp_dir ();
+            this.destroy ();
+            Gtk.main_quit ();
+        //}
+      });
+
+      view_selector.mode_changed.connect (() => {
+          set_modality ((Widgets.Modality) view_selector.selected);
       });
 
       /*btn_close.clicked.connect (() => {
@@ -234,7 +290,7 @@ namespace Coffee {
   		});
 
       _weather.got_weather.connect (() => {
-          //load_weather();
+          load_weather();
       });
 
       this.got_location.connect(() => {
@@ -296,25 +352,66 @@ namespace Coffee {
       var reverse = new Geocode.Reverse.for_location (new Geocode.Location(latitude, longitude, Geocode.LocationAccuracy.REGION));
       try {
           var place = reverse.resolve ();
-          
+
           if(place.get_area() != null )
             settings.change_setting_string(place.get_area(), settings.location_string);
-          else if(place.get_name() != null ) 
+          else if(place.get_name() != null )
             settings.change_setting_string(place.get_name(), settings.location_string);
-          else if(place.get_town() != null ) 
+          else if(place.get_town() != null )
             settings.change_setting_string(place.get_town(), settings.location_string);
-          else if(place.get_street() != null ) 
+          else if(place.get_street() != null )
             settings.change_setting_string(place.get_street(), settings.location_string);
-          else if (place.get_county() != null ) 
+          else if (place.get_county() != null )
             settings.change_setting_string(place.get_county(), settings.location_string);
           else
             settings.change_setting_string(place.get_country(), settings.location_string);
 
           settings.change_setting_string(latitude.to_string() +","+ longitude.to_string(), settings.geolocation_string);
-          this.got_location();  
+          this.got_location();
       } catch (GLib.Error error) {
           debug (error.message);
           this.got_location();
+      }
+    }
+
+    private void set_modality (Widgets.Modality new_modality) {
+        modality = new_modality;
+
+        switch (modality) {
+            case Widgets.Modality.NEWS_VIEW:
+
+                /*if (Launchy.settings.use_category)
+                    Launchy.settings.use_category = false;
+                */
+                view_selector_revealer.set_reveal_child (true);
+                stack.set_visible_child_name ("news");
+                break;
+
+            case Widgets.Modality.WEATHER_VIEW:
+
+                /*if (!Launchy.settings.use_category)
+                    Launchy.settings.use_category = true;
+                    */
+                view_selector_revealer.set_reveal_child (true);
+                stack.set_visible_child_name ("weather");
+                //actions_button.set_active(false);
+                break;
+        }
+    }
+
+    public void clear_tmp_dir ()
+    {
+      string directory = GLib.Environment.get_tmp_dir () + Path.DIR_SEPARATOR_S + ".coffee";
+  		Dir dir = Dir.open (directory, 0);
+  		string? name = null;
+
+		  while ((name = dir.read_name ()) != null) {
+        File file = File.new_for_path (directory + Path.DIR_SEPARATOR_S + name);
+      	try {
+      		file.delete ();
+      	} catch (Error e) {
+      		stdout.printf ("Error: %s\n", e.message);
+      	}
       }
     }
 

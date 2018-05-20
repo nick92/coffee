@@ -40,11 +40,11 @@ namespace Worker {
           var root_object = parser.get_root ().get_object();
 
           if(source == Sources.DARK_SKY){
-            var current = root_object.get_object_member ("hourly");
-            var forecast = root_object.get_object_member ("daily");
+            //var current = root_object.get_object_member ("hourly");
+            //var forecast = root_object.get_object_member ("daily");
 
-            parse_weather(current);
-            parse_forecast(forecast);
+            parse_weather(root_object);
+            //parse_forecast(forecast);
           }
           else{
             var response = root_object.get_array_member ("articles");
@@ -84,13 +84,44 @@ namespace Worker {
 
     public void parse_weather (Json.Object response)
     {
+        var dt = new DateTime.now_local ();
+        var today = dt.get_day_of_week ();
+
+        var current = response.get_object_member ("hourly");
+        var forecast = response.get_object_member ("daily");
+
         var _weather = Coffee.Weather.get_default();
-        _weather.location = settings.location_name_string;
-        _weather.link = "https://darksky.net/forecast/"+settings.geo_location_string;
-        _weather.temp = response.get_array_member ("data").get_object_element(0).get_int_member ("temperature");
-        _weather.text = response.get_array_member ("data").get_object_element(0).get_string_member ("summary");
-        _weather.summary = response.get_string_member ("summary");
-        _weather.weather_img = get_weather_icon(response.get_array_member ("data").get_object_element(0).get_string_member ("icon"), "weather");
+
+        var weather = new Coffee.Weather ();
+        weather.location = settings.location_name_string;
+        weather.link = "https://darksky.net/forecast/"+settings.geo_location_string;
+        weather.temp = current.get_array_member ("data").get_object_element(0).get_int_member ("temperature").to_string ();
+        weather.text = current.get_array_member ("data").get_object_element(0).get_string_member ("summary");
+        weather.day = "Today";
+        weather.summary = current.get_string_member ("summary");
+        weather.weather_img = get_weather_icon(current.get_array_member ("data").get_object_element(0).get_string_member ("icon"), "weather");
+
+        _weather.add_day (weather);
+
+        var forecast_data = forecast.get_array_member ("data");
+        int i = 0;
+
+        foreach (var geonode in forecast_data.get_elements ()) {
+          if(i!=0 && i<6){
+            var geoname = geonode.get_object ();
+            var _newForecast = new Coffee.Weather ();
+            _newForecast.location = settings.location_name_string;
+            _newForecast.day = get_day(today+i);
+            _newForecast.summary = geoname.get_string_member ("summary");
+            _newForecast.text = geoname.get_string_member ("summary");
+            //_newForecast.text = geoname.get_array_member ("data").get_object_element(0).get_string_member ("summary");
+            _newForecast.weather_img = get_weather_icon(geoname.get_string_member ("icon"), "forecast");
+            _newForecast.temp = "H " + geoname.get_int_member ("temperatureHigh").to_string () + "°" + " L " + geoname.get_int_member ("temperatureLow").to_string () + "°";
+            if(_weather != null)
+              _weather.add_day(_newForecast);
+          }
+          i++;
+        }
 
         _weather.got_weather_complete();
     }

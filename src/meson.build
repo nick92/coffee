@@ -3,8 +3,16 @@ sources = [
     'Main.vala',
     'CoffeeBar.vala',
     'CoffeeView.vala',
-    'Post.vala', 		
-    'Weather.vala', 				
+    'Post.vala',
+    'Logger.vala',
+    'Weather.vala',
+    'Views/NewsView.vala',
+    'Views/WeatherView.vala',
+    'Widgets/NewsFlowBox.vala',
+    'Widgets/NewsItem.vala',
+    'Widgets/WeatherFlowBox.vala',
+    'Widgets/WeatherItem.vala',
+    'Widgets/Selector.vala',
     'Worker/Retriever.vala',
     'Worker/Parser.vala',
     'Worker/Sources.vala',
@@ -18,9 +26,16 @@ sources = [
     coffee_resources
 ]
 
+config_file = configure_file(
+    input: 'config.vala.in',
+    output: 'config.vala',
+    configuration: conf_data
+)
+
 executable ('com.github.nick92.coffee',
             sources,
+            config_file,
             dependencies: [glib, gtk, json, soup, webkit, gee, geocode, geoclue],
             vala_args:['--target-glib=2.38', '--gresources=' + meson.source_root () + '/data/coffee-resource.xml'],
             install: true
-            )
+)

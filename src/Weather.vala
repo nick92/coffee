@@ -20,32 +20,55 @@ namespace Coffee {
   public class Weather : Object {
     public string weather_img {get; set;}
     public string location {get; set;}
-    public int64 temp {get; set;}
+    public string temp {get; set;}
     public string text {get; set;}
     public string summary {get; set;}
-    public string forecast {get; set;}
-    public string day {get; set;}
     public string link {get; set;}
+    public string day {get; set;}
+
+    private Gee.ArrayList<Weather> forecast = null;
 
     static Weather? instance = null;
 
     public signal void got_weather ();
 
     public Weather (){
-
+      forecast = new Gee.ArrayList<Weather> ();
     }
 
     public void got_weather_complete () {
       got_weather();
     }
 
-    public static Weather get_default(){
+    public static Weather get_default (){
       if(instance == null)
         instance = new Weather ();
 
       return instance;
     }
+
+    public void add_day (Weather weather)
+    {
+      forecast.add(weather);
+    }
+
+    public void clear_forecast ()
+    {
+      forecast.clear();
+    }
+
+    public Gee.ArrayList<Weather> get_forecast () {
+      if(forecast == null){
+        return new Gee.ArrayList<Weather> ();
+      }
+      return forecast;
+    }
+
+    public int get_forecast_count () {
+      return forecast.size;
+    }
   }
+
   public class Forecast : Object {
     public string weather_img {get; set;}
     public int64 temp {get; set;}

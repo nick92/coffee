@@ -27,32 +27,51 @@ namespace Coffee {
     static CoffeeApp? app = null;
     const string ACTIVTE_KEY = "F10";
     const string QUIT_KEY = "F4";
+    static bool debug = false;
+    static bool version = false;
+
+    const OptionEntry[] options = {
+			{ "debug", 'd', 0, OptionArg.NONE, ref debug, "Enable debug logging", null },
+			{ "version", 'v', 0, OptionArg.NONE, ref version, "Show the application's version", null },
+			{ null }
+		};
 
     protected override void activate () {
+      var provider = new Gtk.CssProvider ();
+      provider.load_from_resource ("com/github/nick92/Coffee/application.css");
+      Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
       if (this.get_windows () == null) {
         bar = new CoffeeBar ();
         bar.set_application(this);
       }
-      connect_events();
-    }
-
-    public void connect_events () {
-      /*Keybinder.init();
-      Keybinder.bind(ACTIVTE_KEY, Coffee.bind_key, bar);
-
-      this.window_removed.connect(() => {
-        show_notification("Coffee Closed", "Handling key %s unbound".printf(ACTIVTE_KEY));
-        unblind_key ();
-      });*/
     }
 
     public CoffeeApp () {
-      //Notify.init ("Coffee");
-      //show_notification("Coffee Started", "Press %s to hide / show.\n".printf(ACTIVTE_KEY));
+
     }
 
     public static int main(string[] args) {
         Gtk.init (ref args);
+
+        Plank.Logger.initialize ("coffee");
+
+        if (args.length > 1) {
+            var context = new OptionContext ("");
+            context.add_main_entries (options, "coffee");
+            context.add_group (Gtk.get_option_group (true));
+
+            try {
+                context.parse (ref args);
+            } catch (Error e) {
+                print (e.message + "\n");
+            }
+        }
+
+  			if (version)
+  				Plank.Logger.DisplayLevel = Plank.LogLevel.VERBOSE;
+  			else if (debug)
+  				Plank.Logger.DisplayLevel = Plank.LogLevel.DEBUG;
 
         app = new CoffeeApp ();
         return app.run (args);
