@@ -68,7 +68,7 @@ namespace Worker {
              new_post.link = geoname.get_string_member ("url");
 
              if(i==intNews)
-              return;
+              break;
 
              if(post != null)
                 post.add_post (new_post);
@@ -85,21 +85,23 @@ namespace Worker {
     public void parse_weather (Json.Object response)
     {
         var dt = new DateTime.now_local ();
-        var today = dt.get_day_of_week ();
+        var today_date = dt.get_day_of_week ();
 
         var current = response.get_object_member ("hourly");
+        var now = current.get_array_member ("data").get_object_element(0);
         var forecast = response.get_object_member ("daily");
+        var today = forecast.get_array_member ("data").get_object_element(0);
 
         var _weather = Coffee.Weather.get_default();
 
         var weather = new Coffee.Weather ();
         weather.location = settings.location_name_string;
         weather.link = "https://darksky.net/forecast/"+settings.geo_location_string;
-        weather.temp = current.get_array_member ("data").get_object_element(0).get_int_member ("temperature").to_string ();
-        weather.text = current.get_array_member ("data").get_object_element(0).get_string_member ("summary");
+        weather.temp = "C " + now.get_int_member ("temperature").to_string () + "° H " + today.get_int_member ("temperatureHigh").to_string () + "° L "+ today.get_int_member ("temperatureLow").to_string () + "°";
+        weather.text = now.get_string_member ("summary");
         weather.day = "Today";
         weather.summary = current.get_string_member ("summary");
-        weather.weather_img = get_weather_icon(current.get_array_member ("data").get_object_element(0).get_string_member ("icon"), "weather");
+        weather.weather_img = get_weather_icon(today.get_string_member ("icon"), "weather");
 
         _weather.add_day (weather);
 
@@ -111,7 +113,7 @@ namespace Worker {
             var geoname = geonode.get_object ();
             var _newForecast = new Coffee.Weather ();
             _newForecast.location = settings.location_name_string;
-            _newForecast.day = get_day(today+i);
+            _newForecast.day = get_day(today_date+i);
             _newForecast.summary = geoname.get_string_member ("summary");
             _newForecast.text = geoname.get_string_member ("summary");
             //_newForecast.text = geoname.get_array_member ("data").get_object_element(0).get_string_member ("summary");

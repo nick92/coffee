@@ -18,6 +18,8 @@ sources = [
     'Worker/Sources.vala',
     'Settings/SettingsWindow.vala',
     'Settings/NewsSourcesList.vala',
+    'Settings/NewsSourcesGet.vala',
+    'Settings/NewsSource.vala',
     'Settings/Settings.vala',
     'Settings/NewsGrid.vala',
     'Settings/LocationGrid.vala',

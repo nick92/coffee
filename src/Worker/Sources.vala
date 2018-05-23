@@ -19,15 +19,6 @@
  */
 
 namespace Worker.Sources {
-    const string GOOGLE_NEWS = "google-news";
-    const string BBC_NEWS = "bbc-news";
-    const string BBC_SPORT = "bbc-sport";
-    const string ENGADGET = "engadget";
-    const string GUARDIAN = "the-guardian-uk";
-    const string HACKER_NEWS = "hacker-news";
-    const string NEXT_WEB_NEWS = "the-next-web";
-    const string NEW_YORK_TIMES = "the-new-york-times";
-
     const string DARK_SKY = "dark-sky";
     const string OPEN_WEATHER_MAP = "open-weather-map";
 }

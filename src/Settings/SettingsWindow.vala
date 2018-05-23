@@ -51,7 +51,7 @@ namespace Settings {
             stack = new Gtk.Stack ();
             //stack.add_titled (new AboutGrid (), "general", "General");
             stack.add_titled (news_grid, "news", "News");
-            stack.add_titled (location_grid, "location", "Location");
+            stack.add_titled (location_grid, "location", "Weather");
 
             var stack_switcher = new Gtk.StackSwitcher ();
             stack_switcher.stack = stack;
@@ -59,7 +59,7 @@ namespace Settings {
             stack_switcher.margin = 24;
 
             stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-            
+
             stack_switcher.event.connect(() => {
               if(stack.visible_child == location_grid)
               {
@@ -71,14 +71,16 @@ namespace Settings {
                 stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
                 button_add.visible = true;
               }
-              
+
               return false;
             });
 
             button_add.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/list-add-symbolic.svg");
+            button_add.label = "Add News Source";
             button_add.halign = Gtk.Align.END;
             button_add.set_tooltip_text ("Add news source");
             button_add.set_relief(Gtk.ReliefStyle.NONE);
+            button_add.get_style_context ().add_class ("addbutton");
 
             button_add.clicked.connect(() => {
             	var news_sources_window = new NewsSourcesList();
@@ -89,8 +91,8 @@ namespace Settings {
       	    });
 
             grid.attach (stack_switcher, 0, 0, 1, 1);
-            grid.attach (button_add, 0, 1, 1, 1); 
-            grid.attach (stack, 0, 2, 1, 1);
+            grid.attach (stack, 0, 1, 1, 1);
+            grid.attach (button_add, 0, 2, 1, 1);
         }
         grid.show ();
 

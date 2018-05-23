@@ -99,6 +99,7 @@ public class Coffee.Widgets.NewsItem : Gtk.FlowBoxChild {
         /*tooltip_text = app_category.summary ?? ""; */
 
         show_all ();
+
     }
 
     public void add_post (string theme_name) {

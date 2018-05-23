@@ -110,12 +110,13 @@ namespace Worker {
     {
       if(news_source == Sources.DARK_SKY)
         return "https://api.darksky.net/forecast/06446ae7099feacb17ffef78fdf89f0a/" + geolocation + "?units=auto&exclude=[minutely,alerts,flags]";
-      else if (news_source == Sources.OPEN_WEATHER_MAP){
+      else if (news_source == Sources.OPEN_WEATHER_MAP) {
         return "http://api.openweathermap.org/data/2.5/weather?lat="+geolocation.split(",")[0]+"&lon="+geolocation.split(",")[1]+"&appid=fa2392a571d54a9d17b1f0f0c934d562&units=metric";
       }
-      else
-        //return "https://newsapi.org/v2/top-headlines?source=" + news_source + "&apiKey=" + apiKey + "";
-        return "https://newsapi.org/v1/articles?source=" + news_source + "&apiKey=" + apiKey + "";
+      else {
+        return "https://newsapi.org/v2/top-headlines?sources=" + news_source + "&apiKey=" + apiKey + "";
+        //return "https://newsapi.org/v1/articles?source=" + news_source + "&apiKey=" + apiKey + "";
+      }
     }
   }
 }
