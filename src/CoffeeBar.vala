@@ -103,7 +103,8 @@ namespace Coffee {
       if(!settings.get_location_bool || reloading)
       {
         new Thread<void*> ("get_weather", () => {
-          retriever.run_parser_weather ();
+          //retriever.run_parser_weather ();
+          weather_loaded = true;
     	    debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
           return null;
         });
@@ -127,7 +128,6 @@ namespace Coffee {
     private void display_all () {
       if(news_loaded && weather_loaded)
       {
-        //articleView.load_new_html();
         spinner.active = false;
         reloading = false;
       }
@@ -151,7 +151,7 @@ namespace Coffee {
     private void load_weather() {
       if(_weather.get_forecast_count () > 0){
         _days = _weather.get_forecast ();
-
+        warning(_weather.get_forecast_count ().to_string ());
         /*foreach (var day in _days) {
             articleView.forecast = day;
         }*/
@@ -196,9 +196,9 @@ namespace Coffee {
   		this.set_default_size (400, height);
   		this.hide_titlebar_when_maximized = false;
 
-      this.destroy.connect (() => {
+      /*this.destroy.connect (() => {
         Gtk.main_quit ();
-  		});
+  		});*/
 
       spinner = new Gtk.Spinner ();
       spinner.active = true;

@@ -1,5 +1,5 @@
 /*
- * HomeView.vala
+ * NewsView.vala
  * This file is part of Coffee
  *
  * Copyright (C) 2018 - Nick Wilkins
@@ -34,6 +34,15 @@ namespace Coffee {
       news_scrolled.add (news_flow);
 
       add (news_scrolled);
+    }
+
+    public void on_launch_url (string uri)
+    {
+      try {
+          AppInfo.launch_default_for_uri (uri, null);
+      } catch (Error e) {
+          warning ("%s\n", e.message);
+      }
     }
 
     public void add_post (Coffee.Post post) {

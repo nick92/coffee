@@ -32,24 +32,29 @@ public class Coffee.Widgets.NewsFlowBox : Gtk.FlowBox {
     }
 
     construct {
-      //add (get_category (_("Some new article with some text"), "audio-speakers", {"Audio"}, "audio"));
-      /*add (get_category (_("Development"), "applications-development", {"IDE", "Development"}, "development"));
-      add (get_category (_("Audio"), "audio-speakers", {"Audio"}, "audio"));
-      add (get_category (_("Development"), "applications-development", {"IDE", "Development"}, "development"));*/
+      this.child_activated.connect ((child) => {
+        var item = child as Widgets.NewsItem;
+        if (item != null) {
+            on_launch_url (item.post.link);
+        }
+      });
+    }
+
+    public void on_launch_url (string uri){
+      try {
+          AppInfo.launch_default_for_uri (uri, null);
+      } catch (Error e) {
+          warning ("%s\n", e.message);
+      }
     }
 
     public void add_post (Coffee.Post post)
     {
-      //post.get_posts ().foreach ((post) => {
         add (get_category (post));
-        //return false;
-      //});
     }
 
     private Widgets.NewsItem get_category (Coffee.Post post) {
-
         var item = new Widgets.NewsItem (post);
-        //item.add_category_class (style);
 
         return item;
     }
