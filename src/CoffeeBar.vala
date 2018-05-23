@@ -53,6 +53,7 @@ namespace Coffee {
     private Gtk.Revealer view_selector_revealer;
 
     private Settings.Settings settings;
+    private Settings.SettingsWindow settings_window;
     private GLib.Cancellable search_cancellable;
 
     private Gtk.Revealer location_revealer;
@@ -67,20 +68,22 @@ namespace Coffee {
     ulong microseconds;
 	  double seconds;
 
-    public CoffeeBar (){
+    public CoffeeBar (Gtk.Application coffee){
+      this.application = coffee;
+
       timer = new Timer ();
       retriever = new Worker.Retriever ();
       //articleView = new CoffeeView ();
       _post = Post.get_default ();
       _weather = Weather.get_default ();
-      _forecast = Forecast.get_default ();
+      //_forecast = Forecast.get_default ();
       settings = Settings.Settings.get_default ();
 
       setup_ui();
       connect_methods();
 
-      //if(settings.get_location_bool)
-        //get_location.begin ();
+      if(settings.get_location_bool)
+        get_location.begin ();
 
       get_news_feed ();
 
@@ -90,8 +93,8 @@ namespace Coffee {
     public void get_news_feed (){
       //GLib.Idle.add(this.get_news_feed.callback);
       new Thread<void*> ("get_news", () => {
-        //retriever.create_fake_news ();
-        retriever.run_parser_news ();
+        retriever.create_fake_news ();
+        //retriever.run_parser_news ();
   	    debug ("Got News at: %s s\n", timer.elapsed (out microseconds).to_string ());
         return null;
       });
@@ -108,8 +111,13 @@ namespace Coffee {
     }
 
     public async void get_weather_feed (){
-      if(settings.geo_location_string != "")
-        retriever.run_parser_weather ();
+      if(settings.geo_location_string != "") {
+        new Thread<void*> ("get_weather", () => {
+          retriever.run_parser_weather ();
+          debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
+          return null;
+        });
+      }
       else{
         weather_loaded = true;
         location_revealer.set_reveal_child(true);
@@ -165,7 +173,7 @@ namespace Coffee {
     private void reload_posts () {
       spinner.active = true;
       _post.clear_posts();
-      _forecast.clear_forecast ();
+      //_forecast.clear_forecast ();
       //articleView.reload_articles();
       news_loaded = false;
       weather_loaded = false;
@@ -280,7 +288,9 @@ namespace Coffee {
       });*/
 
       btn_setting.clicked.connect (() => {
-        var settings_window = new Settings.SettingsWindow();
+        if(settings_window == null)
+          settings_window = new Settings.SettingsWindow (this.application);
+
         settings_window.show_all();
         //location_revealer.set_reveal_child (!location_revealer.child_revealed);
       });
@@ -297,9 +307,9 @@ namespace Coffee {
         get_weather_feed ();
       });
 
-      _forecast.got_forecast.connect (() => {
+      /*_forecast.got_forecast.connect (() => {
           load_weather();
-      });
+      });*/
 
       event_box.key_press_event.connect (on_key_press);
     }
@@ -367,10 +377,13 @@ namespace Coffee {
             settings.change_setting_string(place.get_country(), settings.location_string);
 
           settings.change_setting_string(latitude.to_string() +","+ longitude.to_string(), settings.geolocation_string);
+
+          debug ("Got location at : %s s\n", timer.elapsed (out microseconds).to_string ());
+
           this.got_location();
       } catch (GLib.Error error) {
           debug (error.message);
-          this.got_location();
+          this.got_location_error();
       }
     }
 

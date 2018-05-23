@@ -23,6 +23,7 @@ namespace Settings {
     private NewsContainer news_sources = null;
     private Gtk.FlowBox news_view;
     private NewsContainer news_item;
+    private Gtk.Button button_add;
 
     private Settings settings;
 
@@ -36,6 +37,22 @@ namespace Settings {
       //wallpaper_view.selection_mode = Gtk.SelectionMode.SINGLE;
       news_view.child_activated.connect (update_checked_wallpaper);
 
+      button_add = new Gtk.Button ();
+      button_add.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/list-add-symbolic.svg");
+      button_add.label = "Add News Source";
+      button_add.halign = Gtk.Align.END;
+      button_add.set_tooltip_text ("Add News");
+      //button_add.set_relief(Gtk.ReliefStyle.NONE);
+      button_add.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+
+      button_add.clicked.connect(() => {
+        var news_sources_window = new NewsSourcesList();
+        news_sources_window.show_all();
+        news_sources_window.news_added.connect(() => {
+          refresh_news_items();
+        });
+      });
+
       var scrolled = new Gtk.ScrolledWindow (null, null);
       scrolled.expand = true;
       //scrolled.min_content_height = 400;
@@ -47,7 +64,9 @@ namespace Settings {
       }
 
       //news_item.show_all ();
-      this.attach(scrolled, 1, 0, 1, 1);
+      //scrolled.add (button_add);
+      this.attach(button_add, 0, 1, 1, 1);
+      this.attach(scrolled, 0, 0, 1, 1);
       //connect_events();
       this.show_all();
     }
@@ -75,8 +94,7 @@ namespace Settings {
     }
 
     private void refresh_list () {
-      foreach(Widget child in news_view.get_children ())
-      {
+      foreach(Widget child in news_view.get_children ()) {
         news_view.remove(child);
       }
     }

@@ -42,8 +42,7 @@ namespace Coffee {
       Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
       if (this.get_windows () == null) {
-        bar = new CoffeeBar ();
-        bar.set_application(this);
+        bar = new CoffeeBar (this);
       }
     }
 

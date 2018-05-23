@@ -21,6 +21,9 @@ namespace Settings {
 
     private Gtk.Switch _switch_weather;
     private Gtk.Switch _switch_news;
+
+    private Gtk.Button hide_show_key;
+    private Gtk.Button close_key;
     private Settings settings;
 
     public AboutGrid () {
@@ -37,10 +40,10 @@ namespace Settings {
       var close_label = new Gtk.Label("Quit Coffee:");
       close_label.halign = Gtk.Align.END;
 
-      var hide_show_key = new Gtk.Button.with_label("F10");
+      hide_show_key = new Gtk.Button.with_label("F10");
       hide_show_key.halign = Gtk.Align.END;
 
-      var close_key = new Gtk.Button.with_label("F4");
+      close_key = new Gtk.Button.with_label("F4");
       close_key.halign = Gtk.Align.END;
 
       var weather_label = new Gtk.Label("Weather:");
@@ -72,7 +75,21 @@ namespace Settings {
       _switch_news.notify["active"].connect (() => {
         settings.change_setting_bool(_switch_news.active, settings.news_string);
       });
+
+      connect_events  ();
+    }
+
+    private void connect_events () {
+      hide_show_key.clicked.connect (() => {
+          hide_show_key.set_label ("Assign New Key ...");
+          hide_show_key.key_press_event.connect (key_press_event);
+      });
+    }
+
+    private bool key_press_event (Gdk.EventKey event){
+      hide_show_key.set_label (event.keyval.to_string ());
+      hide_show_key.key_press_event.disconnect (key_press_event);
+      return true;
     }
   }
-
 }

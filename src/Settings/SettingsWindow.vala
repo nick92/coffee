@@ -25,10 +25,11 @@ namespace Settings {
       private Gtk.Stack stack;
       private NewsGrid news_grid;
       private LocationGrid location_grid;
-      private Gtk.Button button_add;
+      private AboutGrid about_grid;
 
 
-      public SettingsWindow () {
+      public SettingsWindow (Gtk.Application coffee) {
+        this.application = coffee;
         settings = new Settings ();
         setup_ui();
       }
@@ -37,7 +38,8 @@ namespace Settings {
         this.title = "Coffee Settings";
 
         // Sets the default size of a window:
-    		this.set_default_size (800, 600);
+    		this.set_default_size (800, 500);
+        this.window_position = Gtk.WindowPosition.CENTER;
     		this.hide_titlebar_when_maximized = false;
 
         if (grid == null) {
@@ -45,22 +47,22 @@ namespace Settings {
             grid.margin = 12;
 
             news_grid = new NewsGrid ();
+            about_grid = new AboutGrid ();
             location_grid = new LocationGrid ();
-            button_add = new Gtk.Button ();
 
             stack = new Gtk.Stack ();
-            //stack.add_titled (new AboutGrid (), "general", "General");
+            stack.add_titled (about_grid, "general", "General");
             stack.add_titled (news_grid, "news", "News");
-            stack.add_titled (location_grid, "location", "Location");
+            stack.add_titled (location_grid, "location", "Weather");
 
             var stack_switcher = new Gtk.StackSwitcher ();
             stack_switcher.stack = stack;
             stack_switcher.halign = Gtk.Align.CENTER;
             stack_switcher.margin = 24;
 
-            stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-            
-            stack_switcher.event.connect(() => {
+            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+
+            /*stack_switcher.event.connect(() => {
               if(stack.visible_child == location_grid)
               {
                 stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
@@ -71,25 +73,12 @@ namespace Settings {
                 stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
                 button_add.visible = true;
               }
-              
+
               return false;
-            });
-
-            button_add.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/list-add-symbolic.svg");
-            button_add.halign = Gtk.Align.END;
-            button_add.set_tooltip_text ("Add news source");
-            button_add.set_relief(Gtk.ReliefStyle.NONE);
-
-            button_add.clicked.connect(() => {
-            	var news_sources_window = new NewsSourcesList();
-        		  news_sources_window.show_all();
-        		  news_sources_window.news_added.connect(() => {
-        			 news_grid.refresh_news_items();
-    			    });
-      	    });
+            });*/
 
             grid.attach (stack_switcher, 0, 0, 1, 1);
-            grid.attach (button_add, 0, 1, 1, 1); 
+            //grid.attach (button_add, 0, 1, 1, 1);
             grid.attach (stack, 0, 2, 1, 1);
         }
         grid.show ();
