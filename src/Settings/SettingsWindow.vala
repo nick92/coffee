@@ -23,9 +23,9 @@ namespace Settings {
       private Settings settings;
       private Gtk.Grid grid;
       private Gtk.Stack stack;
-      private NewsGrid news_grid;
-      private LocationGrid location_grid;
-      private AboutGrid about_grid;
+      private News.NewsGrid news_grid;
+      private Weather.LocationGrid location_grid;
+      private General.AboutGrid about_grid;
 
 
       public SettingsWindow (Gtk.Application coffee) {
@@ -46,9 +46,9 @@ namespace Settings {
             grid = new Gtk.Grid ();
             grid.margin = 12;
 
-            news_grid = new NewsGrid ();
-            about_grid = new AboutGrid ();
-            location_grid = new LocationGrid ();
+            news_grid = new News.NewsGrid ();
+            about_grid = new General.AboutGrid ();
+            location_grid = new Weather.LocationGrid ();
 
             stack = new Gtk.Stack ();
             stack.add_titled (about_grid, "general", "General");

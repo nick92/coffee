@@ -17,7 +17,7 @@
 using Gtk;
 
 namespace Settings {
-  public class LocationGrid : Grid {
+  public class Weather.LocationGrid : Grid {
 
     private Gtk.SearchEntry location_entry;
     private Gtk.Switch _switch_location;

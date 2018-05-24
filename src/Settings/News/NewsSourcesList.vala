@@ -11,7 +11,7 @@ with Coffee. If not, see <http://www.gnu.org/licenses/>. */
 using Gtk;
 
 namespace Settings {
-	public class NewsSourcesList : Window {
+	public class News.NewsSourcesList : Window {
 
 		private Gtk.Box box;
 		private Gtk.SearchEntry news_search_entry;
@@ -37,7 +37,7 @@ namespace Settings {
     """;
 
 		protected void add_row (NewsSource news_row) {
-			var row = new Gtk.ListBoxRow ();
+			var row = new NewsListRow (news_row);
 
       row.show_all ();
       list_box.add (row);

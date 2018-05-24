@@ -17,7 +17,7 @@
 using Gtk;
 
 namespace Settings {
-  public class NewsSourceGet : Object {
+  public class News.NewsSourceGet : Object {
 
     private string sources_uri = "https://newsapi.org/v2/sources?apiKey=e8a66b24da89420b9a419849e95d47a1";
     private NewsSource news_sources;

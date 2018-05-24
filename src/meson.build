@@ -16,15 +16,16 @@ sources = [
     'Worker/Retriever.vala',
     'Worker/Parser.vala',
     'Worker/Sources.vala',
+    'Settings/Weather/LocationGrid.vala',
+    'Settings/General/AboutGrid.vala',
+    'Settings/News/NewsSourcesList.vala',
+    'Settings/News/NewsSourcesGet.vala',
+    'Settings/News/NewsSource.vala',
+    'Settings/News/NewsContainer.vala',
+    'Settings/News/NewsListRow.vala',
+    'Settings/News/NewsGrid.vala',
     'Settings/SettingsWindow.vala',
-    'Settings/NewsSourcesList.vala',
-    'Settings/NewsSourcesGet.vala',
-    'Settings/NewsSource.vala',
     'Settings/Settings.vala',
-    'Settings/NewsGrid.vala',
-    'Settings/LocationGrid.vala',
-    'Settings/NewsContainer.vala',
-    'Settings/AboutGrid.vala',
     coffee_resources
 ]
 

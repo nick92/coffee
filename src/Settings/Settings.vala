@@ -69,15 +69,6 @@ namespace Settings {
     public Settings () {
         this.coffee_settings = new GLib.Settings("com.github.nick92.coffee");
         this.coffee_settings.bind(news_string,this,"news_bool",SettingsBindFlags.DEFAULT);
-        /*this.coffee_settings.bind(bbc_news_string,this,"bbc_news_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(bbc_sport_string,this,"bbc_sport_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(google_news_string,this,"google_news_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(engadget_string,this,"engadget_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(guardian_string,this,"guardian_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(hacker_news_string,this,"hacker_news_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(next_web_string,this,"next_web_bool",SettingsBindFlags.DEFAULT);
-        this.coffee_settings.bind(new_york_times_string,this,"new_york_times_bool",SettingsBindFlags.DEFAULT);*/
-
         this.coffee_settings.bind(weather_string,this,"weather_bool",SettingsBindFlags.DEFAULT);
         this.coffee_settings.bind(open_weather_string,this,"open_weather_bool",SettingsBindFlags.DEFAULT);
         this.coffee_settings.bind(dark_sky_string,this,"dark_sky_bool",SettingsBindFlags.DEFAULT);
@@ -111,7 +102,7 @@ namespace Settings {
     public bool get_news_source_bool (string news_item){
         if(news_sources_enabled != null)
           return news_sources_enabled.contains(news_item);
-        else  
+        else
           return false;
     }
 

@@ -17,7 +17,7 @@
 using Gtk;
 
 namespace Settings {
-  public class AboutGrid : Grid {
+  public class General.AboutGrid : Grid {
 
     private Gtk.Switch _switch_weather;
     private Gtk.Switch _switch_news;

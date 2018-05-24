@@ -17,8 +17,8 @@
  * Authored by: Erasmo Marín
  *
  */
-
-public class NewsContainer : Gtk.FlowBoxChild {
+namespace Settings {
+  public class News.NewsContainer : Gtk.FlowBoxChild {
     private Gtk.Revealer check_revealer;
     private Gtk.Image image;
 
@@ -135,4 +135,5 @@ public class NewsContainer : Gtk.FlowBoxChild {
               checked = false;
         });
     }
+  }
 }

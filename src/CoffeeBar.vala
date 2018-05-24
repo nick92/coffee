@@ -151,7 +151,6 @@ namespace Coffee {
     private void load_weather() {
       if(_weather.get_forecast_count () > 0){
         _days = _weather.get_forecast ();
-        warning(_weather.get_forecast_count ().to_string ());
         /*foreach (var day in _days) {
             articleView.forecast = day;
         }*/

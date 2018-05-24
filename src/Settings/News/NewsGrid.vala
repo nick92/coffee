@@ -18,7 +18,7 @@ using Gtk;
 using Geocode;
 
 namespace Settings {
-  public class NewsGrid : Grid {
+  public class News.NewsGrid : Grid {
 
     private NewsContainer news_sources = null;
     private Gtk.FlowBox news_view;

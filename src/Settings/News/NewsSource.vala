@@ -17,7 +17,7 @@
 using Gtk;
 
 namespace Settings {
-  public class NewsSource : Object {
+  public class News.NewsSource : Object {
 
     private Gee.ArrayList<NewsSource> sources = null;
 
