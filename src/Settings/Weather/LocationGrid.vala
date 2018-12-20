@@ -94,12 +94,12 @@ namespace Settings {
       connect_events ();
       //attach(weather_label, 1, 0, 1, 1);
       //attach(_switch_weather, 2, 0, 1, 1);
-      attach(location_label, 1, 1, 1, 1);
-      attach(location_entry, 2, 1, 1, 1);
-      attach(loading_spinner, 3, 1, 1, 1);
-      attach(location_error, 4, 1, 1, 1);
-      attach(find_location_label, 1, 2, 1, 1);
-      attach(_switch_location, 2, 2, 1, 1);
+      attach(location_label, 1, 2, 1, 1);
+      attach(location_entry, 2, 2, 1, 1);
+      attach(loading_spinner, 3, 2, 1, 1);
+      attach(location_error, 4, 2, 1, 1);
+      attach(find_location_label, 1, 1, 1, 1);
+      attach(_switch_location, 2, 1, 1, 1);
       //attach(open_weather_label, 1, 3, 1, 1);
       //attach(_switch_openweathermap, 2, 3, 1, 1);
       //attach(use_dark_sky_label, 1, 4, 1, 1);
@@ -109,6 +109,7 @@ namespace Settings {
     private void connect_events () {
       _switch_location.notify["active"].connect (() => {
         settings.change_setting_bool(_switch_location.active, settings.get_geo_location);
+        location_entry.sensitive = !_switch_location.active;
       });
       _switch_openweathermap.notify["active"].connect (() => {
         settings.change_setting_bool(_switch_openweathermap.active, settings.open_weather_string);

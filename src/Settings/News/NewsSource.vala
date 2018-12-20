@@ -30,8 +30,11 @@ namespace Settings {
     public string country { get; set; }
     public string language { get; set; }
     public string url { get; set; }
+    public string besticon_url { get; set; }
 
     public signal void get_sources_completed ();
+
+    public signal void new_source (NewsSource source);
 
     public NewsSource () {
       sources = new Gee.ArrayList<NewsSource>();
@@ -48,9 +51,10 @@ namespace Settings {
     public void add_source (NewsSource source)
     {
       sources.add(source);
+      new_source (source);
     }
 
-    public void clear_posts ()
+    public void clear ()
     {
       sources.clear();
     }

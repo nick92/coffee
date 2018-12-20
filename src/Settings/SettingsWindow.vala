@@ -19,6 +19,7 @@ using Geocode;
 
 namespace Settings {
   public class SettingsWindow : Window {
+      public Coffee.CoffeeBar bar {get;construct;}
 
       private Settings settings;
       private Gtk.Grid grid;
@@ -26,10 +27,12 @@ namespace Settings {
       private News.NewsGrid news_grid;
       private Weather.LocationGrid location_grid;
       private General.AboutGrid about_grid;
+      private Coffee.MessageDialog welcome_dialog;
 
 
-      public SettingsWindow (Gtk.Application coffee) {
-        this.application = coffee;
+      public SettingsWindow (Coffee.CoffeeBar bar) {
+        Object(bar: bar);
+
         settings = new Settings ();
         setup_ui();
       }
@@ -42,48 +45,72 @@ namespace Settings {
         this.window_position = Gtk.WindowPosition.CENTER;
     		this.hide_titlebar_when_maximized = false;
 
-        if (grid == null) {
-            grid = new Gtk.Grid ();
-            grid.margin = 12;
-
-            news_grid = new News.NewsGrid ();
-            about_grid = new General.AboutGrid ();
-            location_grid = new Weather.LocationGrid ();
-
-            stack = new Gtk.Stack ();
-            stack.add_titled (about_grid, "general", "General");
-            stack.add_titled (news_grid, "news", "News");
-            stack.add_titled (location_grid, "location", "Weather");
-
-            var stack_switcher = new Gtk.StackSwitcher ();
-            stack_switcher.stack = stack;
-            stack_switcher.halign = Gtk.Align.CENTER;
-            stack_switcher.margin = 24;
-
-            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-
-            /*stack_switcher.event.connect(() => {
-              if(stack.visible_child == location_grid)
-              {
-                stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
-                button_add.visible = false;
-              }
-              if(stack.visible_child == news_grid)
-              {
-                stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-                button_add.visible = true;
-              }
-
-              return false;
-            });*/
-
-            grid.attach (stack_switcher, 0, 0, 1, 1);
-            //grid.attach (button_add, 0, 1, 1, 1);
-            grid.attach (stack, 0, 2, 1, 1);
+        if(settings.first_load_bool) {
+          welcome_dialog = new Coffee.MessageDialog.with_image_from_icon_name ("Welcome", "Please select news feeds and location to begin ...", "dialog-information" , Gtk.ButtonsType.OK );
+          welcome_dialog.show_all();
+          welcome_dialog.response.connect (on_response);
         }
-        grid.show ();
+
+        if(settings.get_news_count() == 0 && !settings.first_load_bool){
+          welcome_dialog = new Coffee.MessageDialog.with_image_from_icon_name ("Select News Sources", "You have no selected news items, please choose some ...", "dialog-information" , Gtk.ButtonsType.OK );
+          welcome_dialog.show_all();
+          welcome_dialog.response.connect (on_response);
+
+          settings.first_load_bool = true;
+        }
+
+        grid = new Gtk.Grid ();
+        grid.margin = 12;
+
+        news_grid = new News.NewsGrid ();
+        about_grid = new General.AboutGrid ();
+        location_grid = new Weather.LocationGrid ();
+
+        news_grid.button_add.clicked.connect(() => {
+          var news_sources_window = new News.NewsSourcesList (this);
+          news_sources_window.show_all();
+          news_sources_window.news_added.connect(() => {
+            news_grid.refresh_news_items();
+            news_sources_window.close();
+          });
+        });
+
+        news_grid.button_refresh.clicked.connect(() => {
+          bar.reload_posts();
+        });
+
+        news_grid.button_launch.clicked.connect(() => {
+          //var coffeebar = new Coffee.CoffeeBar(this.get_application());
+          bar.reload_posts();
+          //bar.show_bar();
+          settings.first_load_bool = false;
+          this.destroy();
+        });
+
+        stack = new Gtk.Stack ();
+        //stack.add_titled (about_grid, "general", "General");
+        stack.add_titled (news_grid, "news", "News");
+        stack.add_titled (location_grid, "location", "Weather");
+
+        var stack_switcher = new Gtk.StackSwitcher ();
+        stack_switcher.stack = stack;
+        stack_switcher.halign = Gtk.Align.CENTER;
+        stack_switcher.margin = 24;
+
+        stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+
+        grid.attach (stack_switcher, 0, 0, 1, 1);
+        grid.attach (stack, 0, 2, 1, 1);
 
         this.add (grid);
       }
+
+      private void on_response (Gtk.Dialog source, int response_id) {
+    		switch (response_id) {
+      		case Gtk.ResponseType.OK:
+      			welcome_dialog.close ();
+      			break;
+      		}
+    	}
   }
 }

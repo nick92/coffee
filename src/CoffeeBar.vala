@@ -28,7 +28,6 @@ namespace Coffee {
     private Post _post = null;
     private Weather _weather = null;
     private Forecast _forecast = null;
-    private CoffeeView articleView = null;
     private Worker.Retriever retriever = null;
 
     private signal void got_location();
@@ -73,28 +72,44 @@ namespace Coffee {
 
       timer = new Timer ();
       retriever = new Worker.Retriever ();
-      //articleView = new CoffeeView ();
       _post = Post.get_default ();
       _weather = Weather.get_default ();
-      //_forecast = Forecast.get_default ();
       settings = Settings.Settings.get_default ();
-
-      setup_ui();
-      connect_methods();
 
       if(settings.get_location_bool)
         get_location.begin ();
 
-      get_news_feed ();
+      setup_ui();
 
-      this.show_bar ();
+      if(settings.first_load_bool)
+      {
+        if(settings.get_location_bool)
+          get_location.begin ();
+
+        settings_window = new Settings.SettingsWindow (this);
+        settings_window.show_all();
+
+        settings.first_load_bool = false;
+        //return;
+      }
+      else if(settings.get_news_count() == 0)
+      {
+        settings_window = new Settings.SettingsWindow (this);
+        settings_window.show_all();
+      }
+      else
+      {
+        connect_methods();
+        get_news_feed ();
+        show_bar ();
+      }
     }
 
     public void get_news_feed (){
       //GLib.Idle.add(this.get_news_feed.callback);
       new Thread<void*> ("get_news", () => {
-        retriever.create_fake_news ();
-        //retriever.run_parser_news ();
+        //retriever.create_fake_news ();
+        retriever.run_parser_news ();
   	    debug ("Got News at: %s s\n", timer.elapsed (out microseconds).to_string ());
         return null;
       });
@@ -103,7 +118,7 @@ namespace Coffee {
       if(!settings.get_location_bool || reloading)
       {
         new Thread<void*> ("get_weather", () => {
-          //retriever.run_parser_weather ();
+          retriever.run_parser_weather ();
           weather_loaded = true;
     	    debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
           return null;
@@ -155,6 +170,8 @@ namespace Coffee {
             articleView.forecast = day;
         }*/
 
+        news_view.add_weather_header (_days[0]);
+
         foreach (var day in _days) {
             weather_view.add_weather (day);
         }
@@ -169,14 +186,16 @@ namespace Coffee {
       display_all ();
     }
 
-    private void reload_posts () {
+    public void reload_posts () {
       spinner.active = true;
       _post.clear_posts();
+      news_view.clear_rows();
       //_forecast.clear_forecast ();
       //articleView.reload_articles();
       news_loaded = false;
       weather_loaded = false;
       reloading = true;
+      //connect_methods();
       get_news_feed ();
     }
 
@@ -207,7 +226,7 @@ namespace Coffee {
       btn_setting.image = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/preferences-system-symbolic.svg");
       btn_setting.halign = Gtk.Align.START;
       btn_setting.set_relief(Gtk.ReliefStyle.NONE);
-      btn_setting.set_tooltip_text ("Coffee Settings");
+      btn_setting.set_tooltip_text ("Settings");
 
       coffee_img = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/coffee-news-symbolic.svg");
 
@@ -235,12 +254,12 @@ namespace Coffee {
       view_selector.margin_bottom = 6;
       view_selector_revealer = new Gtk.Revealer ();
       view_selector_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_RIGHT;
-      view_selector_revealer.add (view_selector);
+      //view_selector_revealer.add (view_selector);
       this.view_selector.selected = 0;
 
       box_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
       //box_header.margin = 2;
-      box_header.set_center_widget (view_selector_revealer);
+      box_header.set_center_widget (coffee_img);
       box_header.pack_start(btn_setting,false, true, 0);
       box_header.pack_start(spinner,false, true, 0);
       box_header.pack_end(btn_close,true, true, 0);
@@ -270,7 +289,7 @@ namespace Coffee {
         //if (main_window != null) {
             clear_tmp_dir ();
             this.destroy ();
-            Gtk.main_quit ();
+            //Gtk.main_quit ();
         //}
       });
 
@@ -287,8 +306,8 @@ namespace Coffee {
       });*/
 
       btn_setting.clicked.connect (() => {
-        if(settings_window == null)
-          settings_window = new Settings.SettingsWindow (this.application);
+        //if(settings_window == null)
+        settings_window = new Settings.SettingsWindow (this);
 
         settings_window.show_all();
         //location_revealer.set_reveal_child (!location_revealer.child_revealed);
@@ -319,17 +338,15 @@ namespace Coffee {
         switch (key) {
             case "F5":
                 reload_posts();
-
                 break;
 
             case "Escape":
+            case "F4":
                   destroy ();
-
                 return true;
 
             case "F10":
                   show_bar ();
-
                 return true;
           }
 
@@ -338,7 +355,7 @@ namespace Coffee {
 
     public async void get_location () {
       try {
-          var simple = yield new GClue.Simple ("com.github.nick92.coffee", GClue.AccuracyLevel.EXACT, null);
+          var simple = yield new GClue.Simple ("com.github.nick92.coffee", GClue.AccuracyLevel.CITY, null);
 
           simple.notify["location"].connect (() => {
               on_location_updated (simple.location.latitude, simple.location.longitude);

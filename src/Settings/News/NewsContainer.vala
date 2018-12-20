@@ -23,21 +23,10 @@ namespace Settings {
     private Gtk.Image image;
 
     public string uri { get; construct; }
+    public string icon { get; construct; }
     public Gdk.Pixbuf thumb { get; construct; }
+    public Gtk.Image img_thumb;
     public bool active { get; construct; }
-
-    const string CARD_STYLE_CSS = """
-        flowboxchild,
-        GtkFlowBox .grid-child {
-            background-color: #F5F6F7;
-        }
-
-        flowboxchild:focus .card,
-        GtkFlowBox .grid-child:focus .card {
-            border: 1px solid alpha (#000, 0.2);
-            border-radius: 3px;
-        }
-    """;
 
     public bool checked {
         get {
@@ -75,21 +64,15 @@ namespace Settings {
 
     construct {
         var scale = get_style_context ().get_scale ();
-        var provider = new Gtk.CssProvider ();
-        try {
-            provider.load_from_data (CARD_STYLE_CSS, CARD_STYLE_CSS.length);
-            Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        } catch (Error e) {
-            critical (e.message);
-        }
 
          try {
             if(uri != null){
-              thumb = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/" + uri + ".png", 100 * scale, 100 * scale, false);
+              thumb = load_new_image (uri);
             }
         } catch (Error e) {
-            critical ("Failed to load wallpaper thumbnail: %s", e.message);
-            return;
+            //critical ("Failed to load wallpaper thumbnail: %s", e.message);
+            thumb = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/missing.png", 100 * scale, 100 * scale, false);
+            //return;
         }
 
         image = new Gtk.Image ();
@@ -134,6 +117,34 @@ namespace Settings {
             else
               checked = false;
         });
+    }
+
+    // We need to first download the screenshot locally so that it doesn't freeze the interface.
+    private Gdk.Pixbuf load_new_image (string url) {
+        //var image = new Gdk.Pixbuf ();
+        Gdk.Pixbuf image = null;
+        var ret = GLib.DirUtils.create_with_parents (GLib.Environment.get_user_cache_dir () + Path.DIR_SEPARATOR_S + "com.github.nick92.coffee" + Path.DIR_SEPARATOR_S + "news_icons", 0755);
+        if (ret == -1) {
+            critical ("Error creating the temporary folder: GFileError #%d", GLib.FileUtils.error_from_errno (GLib.errno));
+        }
+        string path = Path.build_path (Path.DIR_SEPARATOR_S, GLib.Environment.get_user_cache_dir (), "com.github.nick92.coffee", "news_icons");
+        File fileimage;
+        //var source = File.new_for_uri (url);
+        fileimage = File.new_for_path (path  + Path.DIR_SEPARATOR_S + url);
+
+        try {
+            if(fileimage.query_exists ()){
+              image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
+            }
+            else
+              image = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/missing.png", 160, 100, true);
+
+        } catch (Error e) {
+            debug (e.message);
+            return null;
+        }
+
+        return image;
     }
   }
 }

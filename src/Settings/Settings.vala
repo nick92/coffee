@@ -47,6 +47,7 @@ namespace Settings {
 
     public string strNewsSources = "news-sources";
     public string strNewsSourcesEnabled = "news-sources-enabled";
+    public string strFirstLoad = "first-load";
 
     public string weather_string = "weather";
     public string dark_sky_string = "dark-sky";
@@ -55,6 +56,7 @@ namespace Settings {
     public string location_string = "location";
     public string get_geo_location = "getgeolocation";
 
+    public bool first_load_bool {get;set;}
     public bool weather_bool {get;set;}
     public bool open_weather_bool {get;set;}
     public bool dark_sky_bool {get;set;}
@@ -77,6 +79,7 @@ namespace Settings {
         this.coffee_settings.bind(get_geo_location,this,"get_location_bool",SettingsBindFlags.DEFAULT);
         this.coffee_settings.bind(strNewsSources,this,"news_sources_string",SettingsBindFlags.DEFAULT);
         this.coffee_settings.bind(strNewsSourcesEnabled,this,"news_sources_enabled_string",SettingsBindFlags.DEFAULT);
+        this.coffee_settings.bind(strFirstLoad,this,"first_load_bool",SettingsBindFlags.DEFAULT);
     }
 
     public Gee.ArrayList<string> get_news_sources_random()
@@ -151,6 +154,9 @@ namespace Settings {
     {
       string sources_enabled = "";
 
+      if(news_sources_enabled == null)
+        news_sources_enabled = get_news_sources_enabled ();
+
       if(value){
         if(!news_sources_enabled.contains(news_item)){
           news_sources_enabled.add(news_item);
@@ -191,8 +197,10 @@ namespace Settings {
 
     public int get_news_count()
     {
-      if(news_sources_enabled == null )
-        return 1;
+      if(news_sources_enabled == null ){
+        news_sources_enabled = get_news_sources_enabled();
+        return news_sources_enabled.size;
+      }
       else
         return news_sources_enabled.size;
     }

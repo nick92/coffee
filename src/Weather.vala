@@ -19,12 +19,14 @@ using Gtk;
 namespace Coffee {
   public class Weather : Object {
     public string weather_img {get; set;}
+    public string icon {get;set;}
     public string location {get; set;}
     public string temp {get; set;}
     public string text {get; set;}
     public string summary {get; set;}
     public string link {get; set;}
     public string day {get; set;}
+    public string percip {get;set;}
 
     private Gee.ArrayList<Weather> forecast = null;
 

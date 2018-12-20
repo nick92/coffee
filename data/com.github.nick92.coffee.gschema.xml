@@ -1,46 +1,51 @@
 <schemalist>
 	<schema path="/com/github/nick92/coffee/" id="com.github.nick92.coffee" gettext-domain="coffee">
-		<key name="weather" type="b">
+	<key name="first-load" type="b">
+            <default>true</default>
+            <summary>First load of Coffee</summary>
+            <description></description>
+        </key>
+	<key name="weather" type="b">
             <default>true</default>
             <summary>Enable weather widget</summary>
             <description></description>
         </key>
-		<key name="news" type="b">
+	<key name="news" type="b">
             <default>true</default>
             <summary>Enable news widget</summary>
             <description></description>
         </key>
-		<key name="dark-sky" type="b">
+	<key name="dark-sky" type="b">
             <default>true</default>
             <summary>Use dark sky feed for weather</summary>
             <description></description>
         </key>
-		<key name="open-weather-map" type="b">
+	<key name="open-weather-map" type="b">
             <default>false</default>
             <summary>Use Open Weather Map feed for weather</summary>
             <description></description>
         </key>
-		<key name="geolocation" type="s">
+	<key name="geolocation" type="s">
             <default>""</default>
             <summary>Geolocation from weather report</summary>
             <description></description>
         </key>
-		<key name="location" type="s">
+	<key name="location" type="s">
             <default>""</default>
             <summary>Location name from weather report</summary>
             <description></description>
         </key>
-		<key name="news-sources" type="s">
-            <default>"bbc-news;bbc-sport;the-guardian-uk;the-next-web;the-new-york-times;google-news;engadget;"</default>
+	<key name="news-sources" type="s">
+            <default>""</default>
             <summary>News sources in news list but not used in application</summary>
             <description></description>
         </key>
-		<key name="news-sources-enabled" type="s">
-            <default>"bbc-news;bbc-sport;the-guardian-uk;engadget;the-next-web;"</default>
+	<key name="news-sources-enabled" type="s">
+	    <default>""</default>
             <summary>News sources currently being used</summary>
             <description></description>
         </key>
-		<key name="getgeolocation" type="b">
+	<key name="getgeolocation" type="b">
             <default>true</default>
             <summary>Get geolocation automatically</summary>
             <description></description>

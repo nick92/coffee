@@ -48,9 +48,28 @@ public class Coffee.Widgets.NewsFlowBox : Gtk.FlowBox {
       }
     }
 
+    public void clear ()
+    {
+      if(get_children ().length().to_string().to_int() > 0){
+  				get_children ().foreach ((child) => {
+  						remove (child);
+  			});
+      }
+    }
+
     public void add_post (Coffee.Post post)
     {
         add (get_category (post));
+    }
+
+    public void add_weather (Coffee.Weather weather)
+    {
+        add (get_weather_item (weather));
+    }
+
+    private Widgets.WeatherHeaderItem get_weather_item (Coffee.Weather weather) {
+        var item = new Widgets.WeatherHeaderItem (weather);
+        return item;
     }
 
     private Widgets.NewsItem get_category (Coffee.Post post) {

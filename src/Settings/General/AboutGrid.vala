@@ -24,6 +24,7 @@ namespace Settings {
 
     private Gtk.Button hide_show_key;
     private Gtk.Button close_key;
+    private Gtk.Button btn_donate;
     private Settings settings;
 
     public AboutGrid () {
@@ -40,11 +41,19 @@ namespace Settings {
       var close_label = new Gtk.Label("Quit Coffee:");
       close_label.halign = Gtk.Align.END;
 
+      var donate_label = new Gtk.Label("Help Coffee:");
+      donate_label.halign = Gtk.Align.END;
+
       hide_show_key = new Gtk.Button.with_label("F10");
+      hide_show_key.sensitive = false;
       hide_show_key.halign = Gtk.Align.END;
 
-      close_key = new Gtk.Button.with_label("F4");
+      close_key = new Gtk.Button.with_label("Esc / F4");
+      close_key.sensitive = false;
       close_key.halign = Gtk.Align.END;
+
+      btn_donate = new Gtk.Button.with_label("Donate");
+      btn_donate.halign = Gtk.Align.END;
 
       var weather_label = new Gtk.Label("Weather:");
       weather_label.halign = Gtk.Align.END;
@@ -68,6 +77,8 @@ namespace Settings {
       attach(hide_show_key, 2, 2, 1, 1);
       attach(close_label, 1, 3, 1, 1);
       attach(close_key, 2, 3, 1, 1);
+      attach(donate_label, 1, 4, 1, 1);
+      attach(btn_donate, 2, 4, 1, 1);
 
       _switch_weather.notify["active"].connect (() => {
         settings.change_setting_bool(_switch_weather.active, settings.weather_string);
@@ -83,6 +94,11 @@ namespace Settings {
       hide_show_key.clicked.connect (() => {
           hide_show_key.set_label ("Assign New Key ...");
           hide_show_key.key_press_event.connect (key_press_event);
+      });
+
+      btn_donate.clicked.connect (() => {
+        var stripe_dialog = new StripeDialog(20, "Coffee", "", "pk_test_KLh0MCbZmwQHPtbEyGlQvR9Q");
+        stripe_dialog.show_all();
       });
     }
 

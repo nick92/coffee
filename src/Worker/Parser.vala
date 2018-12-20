@@ -97,11 +97,13 @@ namespace Worker {
         var weather = new Coffee.Weather ();
         weather.location = settings.location_name_string;
         weather.link = "https://darksky.net/forecast/"+settings.geo_location_string;
-        weather.temp = "C " + now.get_int_member ("temperature").to_string () + "° H " + today.get_int_member ("temperatureHigh").to_string () + "° L "+ today.get_int_member ("temperatureLow").to_string () + "°";
+        weather.temp = "Now: " + now.get_int_member ("temperature").to_string () + "° High: " + today.get_int_member ("temperatureHigh").to_string () + "° Low: "+ today.get_int_member ("temperatureLow").to_string () + "°";
         weather.text = now.get_string_member ("summary");
         weather.day = "Today";
         weather.summary = current.get_string_member ("summary");
+        weather.icon = today.get_string_member ("icon");
         weather.weather_img = get_weather_icon(today.get_string_member ("icon"), "weather");
+        weather.percip = "Chance of rain: " + (today.get_int_member("precipProbability") * 100).to_string () + "%";
 
         _weather.add_day (weather);
 

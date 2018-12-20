@@ -23,17 +23,28 @@ using Gtk;
 namespace Coffee {
   public class Views.NewsView : Stack {
     Widgets.NewsFlowBox news_flow;
+    Widgets.WeatherHeaderFlowBox weather_header_flow;
     private Gtk.ScrolledWindow news_scrolled;
 
     construct {
-
       news_flow = new Widgets.NewsFlowBox ();
+      weather_header_flow = new Widgets.WeatherHeaderFlowBox ();
+
+      var box_view = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+      box_view.add (weather_header_flow);
+      box_view.add (news_flow);
 
       news_scrolled = new Gtk.ScrolledWindow (null, null);
       news_scrolled.set_overlay_scrolling(true);
-      news_scrolled.add (news_flow);
+      news_scrolled.add (box_view);
 
       add (news_scrolled);
+    }
+
+    public void clear_rows ()
+    {
+      news_flow.clear();
+      weather_header_flow.clear();
     }
 
     public void on_launch_url (string uri)
@@ -47,6 +58,10 @@ namespace Coffee {
 
     public void add_post (Coffee.Post post) {
       news_flow.add_post (post);
+    }
+
+    public void add_weather_header (Coffee.Weather weather) {
+      weather_header_flow.add_weather (weather);
     }
   }
 }

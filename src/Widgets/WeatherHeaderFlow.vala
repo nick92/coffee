@@ -18,10 +18,10 @@
  * Authored by: Corentin Noël <corentin@elementaryos.org>
  */
 /* Taken from elementary AppCenter */
-public class Coffee.Widgets.WeatherFlowBox : Gtk.FlowBox {
-    //private Coffee.Weather weather;
+public class Coffee.Widgets.WeatherHeaderFlowBox : Gtk.FlowBox {
+    private Coffee.Weather post;
 
-    public WeatherFlowBox () {
+    public WeatherHeaderFlowBox () {
         Object (activate_on_single_click: true,
                 homogeneous: false,
                 margin_start: 12,
@@ -31,13 +31,16 @@ public class Coffee.Widgets.WeatherFlowBox : Gtk.FlowBox {
                 max_children_per_line: 1);
     }
 
-    public void add_weather (Coffee.Weather weather)
-    {
-      add (get_weather_item (weather));
+    construct {
+      this.child_activated.connect ((child) => {
+        var item = child as Widgets.WeatherHeaderItem;
+        if (item != null) {
+            //on_launch_url (item.link);
+        }
+      });
     }
 
-    public void clear ()
-    {
+    public void clear () {
       if(get_children ().length().to_string().to_int() > 0){
   				get_children ().foreach ((child) => {
   						remove (child);
@@ -45,9 +48,13 @@ public class Coffee.Widgets.WeatherFlowBox : Gtk.FlowBox {
       }
     }
 
-    private Widgets.WeatherItem get_weather_item (Coffee.Weather weather) {
-        var item = new Widgets.WeatherItem (weather);
-        //item.add_category_class (style);
+    public void add_weather (Coffee.Weather weather)
+    {
+        add (get_weather_item (weather));
+    }
+
+    private Widgets.WeatherHeaderItem get_weather_item (Coffee.Weather weather) {
+        var item = new Widgets.WeatherHeaderItem (weather);
         return item;
     }
 }
