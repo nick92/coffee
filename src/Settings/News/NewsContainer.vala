@@ -21,6 +21,7 @@ namespace Settings {
   public class News.NewsContainer : Gtk.FlowBoxChild {
     private Gtk.Revealer check_revealer;
     private Gtk.Image image;
+    private Gtk.Label name;
 
     public string uri { get; construct; }
     public string icon { get; construct; }
@@ -71,9 +72,13 @@ namespace Settings {
             }
         } catch (Error e) {
             //critical ("Failed to load wallpaper thumbnail: %s", e.message);
-            thumb = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/missing.png", 100 * scale, 100 * scale, false);
+            thumb = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/question.png", 100 * scale, 100 * scale, false);
             //return;
         }
+
+        var uri_name = uri.replace ("-"," ");
+
+        name = new Gtk.Label (uri_name);
 
         image = new Gtk.Image ();
         image.gicon = thumb;
@@ -83,8 +88,11 @@ namespace Settings {
         // We need an extra grid to not apply a scale == 1 to the "card" style.
         var card_box = new Gtk.Grid ();
         card_box.get_style_context ().add_class ("card");
-        card_box.add (image);
-        card_box.margin = 9;
+        
+        card_box.attach (image, 0, 0, 1, 1);
+        card_box.attach (name, 0, 1, 1, 1);
+        card_box.margin = 15;
+        card_box.set_row_spacing (10);
 
         //var check = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.LARGE_TOOLBAR);
         var check = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/selection-check.svg");
@@ -117,10 +125,17 @@ namespace Settings {
             else
               checked = false;
         });
+
+        card_box.query_tooltip.connect ((x, y, keyboard_tooltip, tooltip) => {
+			//tooltip.set_icon_from_icon_name ("document-open", Gtk.IconSize.LARGE_TOOLBAR); 
+			tooltip.set_markup ("<b>My Tooltip</b>");
+			return true;
+		});
     }
 
     // We need to first download the screenshot locally so that it doesn't freeze the interface.
     private Gdk.Pixbuf load_new_image (string url) {
+        debug("Getting icon from Besticon:%s", url);
         //var image = new Gdk.Pixbuf ();
         Gdk.Pixbuf image = null;
         var ret = GLib.DirUtils.create_with_parents (GLib.Environment.get_user_cache_dir () + Path.DIR_SEPARATOR_S + "com.github.nick92.coffee" + Path.DIR_SEPARATOR_S + "news_icons", 0755);
@@ -136,8 +151,16 @@ namespace Settings {
             if(fileimage.query_exists ()){
               image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
             }
-            else
-              image = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/missing.png", 160, 100, true);
+            else {
+                NewsSourceGet news_sources_get = new NewsSourceGet ();
+                news_sources_get.get_besticon_url (url, (obj, res) => {
+                    var besticon_url = news_sources_get.get_besticon_url.end (res);
+                    if(fileimage.query_exists ()){
+                        image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
+                    }                        
+                });
+                image = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/question.png", 160, 100, true);
+            }
 
         } catch (Error e) {
             debug (e.message);

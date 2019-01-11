@@ -204,13 +204,14 @@ public class Coffee.MessageDialog : Gtk.Dialog {
      * @param buttons the {@link Gtk.ButtonsType} value that decides what buttons to use, defaults to {@link Gtk.ButtonsType.CLOSE},
      *        see {@link Granite.MessageDialog.buttons} on details and what values are accepted
      */
-    public MessageDialog.with_image_from_icon_name (string primary_text, string secondary_text, string image_icon_name = "dialog-information", Gtk.ButtonsType buttons = Gtk.ButtonsType.CLOSE) {
+    public MessageDialog.with_image_from_icon_name (Gtk.Window window, string primary_text, string secondary_text, string image_icon_name = "dialog-information", Gtk.ButtonsType buttons = Gtk.ButtonsType.CLOSE) {
         Object (
             primary_text: primary_text,
             secondary_text: secondary_text,
             image_icon: new ThemedIcon (image_icon_name),
             buttons: buttons
         );
+        this.transient_for = window;
     }
 
     construct {

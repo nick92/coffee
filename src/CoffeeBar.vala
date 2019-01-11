@@ -75,6 +75,7 @@ namespace Coffee {
       _post = Post.get_default ();
       _weather = Weather.get_default ();
       settings = Settings.Settings.get_default ();
+      settings_window = new Settings.SettingsWindow (this);
 
       if(settings.get_location_bool)
         get_location.begin ();
@@ -86,16 +87,16 @@ namespace Coffee {
         if(settings.get_location_bool)
           get_location.begin ();
 
-        settings_window = new Settings.SettingsWindow (this);
-        settings_window.show_all();
+        //settings_window = new Settings.SettingsWindow (this);
+        settings_window.open();
 
         settings.first_load_bool = false;
         //return;
       }
       else if(settings.get_news_count() == 0)
       {
-        settings_window = new Settings.SettingsWindow (this);
-        settings_window.show_all();
+        //settings_window = new Settings.SettingsWindow (this);
+        settings_window.open();
       }
       else
       {
@@ -305,12 +306,9 @@ namespace Coffee {
         }
       });*/
 
-      btn_setting.clicked.connect (() => {
-        //if(settings_window == null)
-        settings_window = new Settings.SettingsWindow (this);
-
-        settings_window.show_all();
-        //location_revealer.set_reveal_child (!location_revealer.child_revealed);
+      btn_setting.clicked.connect (() => {        
+        //settings_window = new Settings.SettingsWindow (this);
+        settings_window.open();
       });
 
       _post.post_add_completed.connect (() => {
@@ -451,6 +449,13 @@ namespace Coffee {
       else {
         this.show_all();
       }
+    }
+
+    public void launch () {
+      settings_window = new Settings.SettingsWindow (this);
+      connect_methods();
+      get_news_feed ();
+      this.show_all();
     }
   }
 }

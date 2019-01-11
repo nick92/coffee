@@ -21,7 +21,7 @@ namespace Settings {
 
     private string sources_uri = "https://newsapi.org/v2/sources?";
     //private string sources_uri = "https://newsapi.org/v2/sources?apiKey=e8a66b24da89420b9a419849e95d47a1";
-    private string besticons_uri = "https://besticon.herokuapp.com/allicons.json?url=";
+    private string besticons_uri = "https://coffee-favicon.herokuapp.com/allicons.json?url=";
     //https://besticon.herokuapp.com/allicons.json?url=
     private NewsSource news_sources;
     private string apiKey = "e8a66b24da89420b9a419849e95d47a1";
@@ -46,20 +46,7 @@ namespace Settings {
           var response = root_object.get_array_member ("sources");
           add_sources(response);
       } catch (Error e) {
-           stderr.printf ("I guess something is not working...\n");
-      }
-    }
-
-    private string parse_besticon_message (Soup.Message message){
-      try {
-          var parser = new Json.Parser ();
-          parser.load_from_data ((string) message.response_body.flatten ().data, -1);
-          var root_object = parser.get_root ().get_object();
-          var response = root_object.get_array_member ("icons").get_object_element(0);
-          return response.get_string_member ("url");
-      } catch (Error e) {
-           stderr.printf ("I guess something is not working...\n");
-           return "";
+           stderr.printf ("I guess something is not working...\n"+e.message);
       }
     }
 
@@ -83,6 +70,7 @@ namespace Settings {
     }
 
     public async string get_besticon_url (string source_name){
+      debug("get_besticon_url("+source_name+")");  
       var uri = besticons_uri + source_name;
       var session = new Soup.Session ();
       string besticon_url = "";
@@ -98,6 +86,21 @@ namespace Settings {
 
       yield;
       return besticon_url;
+    }
+
+    private string parse_besticon_message (Soup.Message message){
+        try {
+            var parser = new Json.Parser ();
+            parser.load_from_data ((string) message.response_body.flatten ().data, -1);
+            var root_object = parser.get_root ().get_object();
+            var response = root_object.get_array_member ("icons").get_object_element(0);
+            if(response.get_string_member ("format") == "ico")
+                response = root_object.get_array_member ("icons").get_object_element(1);
+            return response.get_string_member ("url");
+        } catch (Error e) {
+             stderr.printf ("I guess something is not working...\n"+e.message);
+             return "";
+        }
     }
 
     private async void add_sources (Json.Array response){

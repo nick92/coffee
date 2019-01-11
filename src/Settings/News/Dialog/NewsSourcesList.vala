@@ -76,13 +76,13 @@ namespace Settings {
 			//box.margin = 5;
 
 			button_add_news = new Gtk.Button();
-			button_add_news.label = "Add News";
+			button_add_news.label = "Done";
 			button_add_news.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
 			button_add_news.margin = 5;
 
 			button_add_news.clicked.connect(() => {
 				//list_box.get_selected_rows ().foreach ((r) => {	
-				list_box.get_children ().foreach ((r) => {
+				/* list_box.get_children ().foreach ((r) => {
 					var row = (NewsListRow)r;
 					if(row.checkbox.active) {
 						news_sources_get.get_besticon_url (row.news_source.url, (obj, res) => {
@@ -92,7 +92,8 @@ namespace Settings {
 							news_added();
 						});
 					}
-				});
+				});*/
+				this.destroy();
 			});
 
 			news_search_entry = new Gtk.SearchEntry ();
@@ -104,8 +105,12 @@ namespace Settings {
 			list_box.row_activated.connect ((r) => {
 				var row = (NewsListRow)r;
 				row.checkbox.set_active(!row.checkbox.active);
-				//settings.set_news_source (row.news_source.id);
-				//news_added();
+				news_sources_get.get_besticon_url (row.news_source.url, (obj, res) => {
+					var besticon_url = news_sources_get.get_besticon_url.end (res);
+					load_new_image (besticon_url, row.news_source.id);
+					settings.set_news_source (row.news_source.id);
+					news_added();
+				});
 			});
 
 			news_search_entry.search_changed.connect (() => {
@@ -156,7 +161,7 @@ namespace Settings {
 			container.attach (button_add_news, 1, 1, 1, 1);
         	add (container);
 
-				//add(scrolled);
+			//add(scrolled);
 		}
 
 		private void selection_changed (string name)
@@ -184,42 +189,42 @@ namespace Settings {
 		}
 
 		// We need to first download the screenshot locally so that it doesn't freeze the interface.
-    public void load_new_image (string url, string icon) {
-				debug("Getting icon from Besticon:%s", url);
-        var ret = GLib.DirUtils.create_with_parents (GLib.Environment.get_user_cache_dir () + Path.DIR_SEPARATOR_S + "com.github.nick92.coffee" + Path.DIR_SEPARATOR_S + "news_icons", 0755);
-        if (ret == -1) {
-            critical ("Error creating the temporary folder: GFileError #%d", GLib.FileUtils.error_from_errno (GLib.errno));
-        }
+		public void load_new_image (string url, string icon) {
+			debug("Getting icon from Besticon:url:%s:icon:%s", url, icon);
+			var ret = GLib.DirUtils.create_with_parents (GLib.Environment.get_user_cache_dir () + Path.DIR_SEPARATOR_S + "com.github.nick92.coffee" + Path.DIR_SEPARATOR_S + "news_icons", 0755);
+			if (ret == -1) {
+				critical ("Error creating the temporary folder: GFileError #%d", GLib.FileUtils.error_from_errno (GLib.errno));
+			}
 
-        string path = Path.build_path (Path.DIR_SEPARATOR_S, GLib.Environment.get_user_cache_dir (), "com.github.nick92.coffee", "news_icons");
-        File fileimage;
-        var source = File.new_for_uri (url);
-        fileimage = File.new_for_path (path  + Path.DIR_SEPARATOR_S + icon);
-        try {
-            if(!fileimage.query_exists ()){
-              source.copy (fileimage, GLib.FileCopyFlags.OVERWRITE);
-            }
-        } catch (Error e) {
-            debug (e.message);
-            //return null;
-        }
+			string path = Path.build_path (Path.DIR_SEPARATOR_S, GLib.Environment.get_user_cache_dir (), "com.github.nick92.coffee", "news_icons");
+			File fileimage;
+			var source = File.new_for_uri (url);
+			fileimage = File.new_for_path (path  + Path.DIR_SEPARATOR_S + icon);
+			try {
+				if(!fileimage.query_exists ()){
+					source.copy (fileimage, GLib.FileCopyFlags.OVERWRITE);
+				}
+			} catch (Error e) {
+				debug (e.message);
+				//return null;
+			}
 
-        /*Idle.add (() => {
-            try {
-                //image.width_request = 80;
-                //image.height_request = 50;
-                //image.icon_name = "image-x-generic";
-                //image.halign = Gtk.Align.CENTER;
-                //image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
-                //image.show ();
-            } catch (Error e) {
-                critical (e.message);
-            }
+			/*Idle.add (() => {
+				try {
+					//image.width_request = 80;
+					//image.height_request = 50;
+					//image.icon_name = "image-x-generic";
+					//image.halign = Gtk.Align.CENTER;
+					//image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
+					//image.show ();
+				} catch (Error e) {
+					critical (e.message);
+				}
 
-            return GLib.Source.REMOVE;
-        });*/
+				return GLib.Source.REMOVE;
+			});*/
 
-        //return image;
-    }
+			//return image;
+		}
 	}
 }

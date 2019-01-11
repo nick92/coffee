@@ -28,17 +28,21 @@ namespace Settings {
       private Weather.LocationGrid location_grid;
       private General.AboutGrid about_grid;
       private Coffee.MessageDialog welcome_dialog;
+      public bool is_open = false;
 
 
       public SettingsWindow (Coffee.CoffeeBar bar) {
         Object(bar: bar);
-
+        this.transient_for = bar;
         settings = new Settings ();
-        setup_ui();
+
+        this.destroy.connect (() => {   
+          is_open = false;
+        });
       }
 
       public void setup_ui (){
-        this.title = "Coffee Settings";
+        this.title = "Settings";
 
         // Sets the default size of a window:
     		this.set_default_size (800, 500);
@@ -46,13 +50,13 @@ namespace Settings {
     		this.hide_titlebar_when_maximized = false;
 
         if(settings.first_load_bool) {
-          welcome_dialog = new Coffee.MessageDialog.with_image_from_icon_name ("Welcome", "Please select news feeds and location to begin ...", "dialog-information" , Gtk.ButtonsType.OK );
+          welcome_dialog = new Coffee.MessageDialog.with_image_from_icon_name (this, "Welcome", "Please select news feeds and location to begin ...", "dialog-information" , Gtk.ButtonsType.OK );
           welcome_dialog.show_all();
           welcome_dialog.response.connect (on_response);
         }
 
         if(settings.get_news_count() == 0 && !settings.first_load_bool){
-          welcome_dialog = new Coffee.MessageDialog.with_image_from_icon_name ("Select News Sources", "You have no selected news items, please choose some ...", "dialog-information" , Gtk.ButtonsType.OK );
+          welcome_dialog = new Coffee.MessageDialog.with_image_from_icon_name (this, "Select News Sources", "You have no selected news items, please choose some ...", "dialog-information" , Gtk.ButtonsType.OK );
           welcome_dialog.show_all();
           welcome_dialog.response.connect (on_response);
 
@@ -71,7 +75,7 @@ namespace Settings {
           news_sources_window.show_all();
           news_sources_window.news_added.connect(() => {
             news_grid.refresh_news_items();
-            news_sources_window.close();
+            //news_sources_window.close();
           });
         });
 
@@ -81,8 +85,8 @@ namespace Settings {
 
         news_grid.button_launch.clicked.connect(() => {
           //var coffeebar = new Coffee.CoffeeBar(this.get_application());
-          bar.reload_posts();
-          //bar.show_bar();
+          bar.launch();
+          
           settings.first_load_bool = false;
           this.destroy();
         });
@@ -103,6 +107,14 @@ namespace Settings {
         grid.attach (stack, 0, 2, 1, 1);
 
         this.add (grid);
+      }
+
+      public void open() {
+        if(!is_open) {
+          setup_ui();
+          this.show_all();
+          is_open = true;
+        }
       }
 
       private void on_response (Gtk.Dialog source, int response_id) {
