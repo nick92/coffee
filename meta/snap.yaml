@@ -10,7 +10,6 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 apps:
   coffee:
     command: com.github.nick92.coffee
-    desktop: usr/share/applications/com.github.nick92.coffee.desktop
     environment:
      GSETTINGS_SCHEMA_DIR: $SNAP/share/glib-2.0/schemas
 
@@ -18,7 +17,6 @@ parts:
   coffee:
     source: https://github.com/nick92/coffee.git
     plugin: meson
-    meson-parameters: [--prefix=/usr]
     source-type: git
     build-packages:
      - libgtk-3-dev

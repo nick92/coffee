@@ -39,7 +39,7 @@ config_file = configure_file(
     configuration: conf_data
 )
 
-executable ('com.github.nick92.coffee',
+executable (meson.project_name(),
             sources,
             config_file,
             dependencies: [glib, gtk, json, soup, gee, geocode, geoclue],
