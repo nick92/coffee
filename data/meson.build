@@ -12,3 +12,5 @@ install_data('com.github.nick92.coffee.appdata.xml',
     install_dir : join_paths('share', 'metainfo'))
 
 subdir('icons')
+
+meson.add_install_script('install_schema.py')
