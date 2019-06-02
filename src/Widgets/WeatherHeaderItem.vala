@@ -108,7 +108,7 @@ public class Coffee.Widgets.WeatherHeaderItem : Gtk.FlowBoxChild {
         expanded_grid.margin = 12;
 
         themed_grid = new Gtk.Grid ();
-        themed_grid.get_style_context ().add_class ("category");
+        //themed_grid.get_style_context ().add_class ("category");
         themed_grid.attach (grid, 0, 0, 1, 1);
         themed_grid.attach (expanded_grid, 0, 0, 1, 1);
         themed_grid.margin = 10;

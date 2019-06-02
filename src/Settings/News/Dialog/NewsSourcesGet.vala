@@ -30,8 +30,12 @@ namespace Settings {
         news_sources = NewsSource.get_default ();
     }
 
-    public void get_sources (string category = "") {
-        sources_uri = sources_uri + "category=" + category + "&apiKey=" + apiKey;
+    public void get_sources (string category = "", string country = "") {
+        if(category != "" && country != "")
+          sources_uri = "https://newsapi.org/v2/sources?" + "category=" + category + "&language=" + country + "&apiKey=" + apiKey;
+        else
+          sources_uri = "https://newsapi.org/v2/sources?" + "apiKey=" + apiKey;
+
         var session = new Soup.Session ();
         var message = new Soup.Message ("GET", sources_uri);
         session.send_message (message);
@@ -43,8 +47,10 @@ namespace Settings {
           var parser = new Json.Parser ();
           parser.load_from_data ((string) message.response_body.flatten ().data, -1);
           var root_object = parser.get_root ().get_object();
-          var response = root_object.get_array_member ("sources");
-          add_sources(response);
+          if(root_object.get_array_member ("sources") != null) {
+            var response = root_object.get_array_member ("sources");
+            add_sources(response);
+          }
       } catch (Error e) {
            stderr.printf ("I guess something is not working...\n"+e.message);
       }
@@ -93,10 +99,15 @@ namespace Settings {
             var parser = new Json.Parser ();
             parser.load_from_data ((string) message.response_body.flatten ().data, -1);
             var root_object = parser.get_root ().get_object();
-            var response = root_object.get_array_member ("icons").get_object_element(0);
-            if(response.get_string_member ("format") == "ico")
-                response = root_object.get_array_member ("icons").get_object_element(1);
-            return response.get_string_member ("url");
+            if(root_object.get_array_member ("icons") != null && root_object.get_array_member ("icons").get_length() > 0) {
+              var response = root_object.get_array_member ("icons").get_object_element(1);;
+              //warning(response.get_string_member ("url"));
+              //if(response.get_string_member ("format") == "ico")
+                //  response = root_object.get_array_member ("icons").get_object_element(1);
+              return response.get_string_member ("url");
+            }
+            else
+              return "";
         } catch (Error e) {
              stderr.printf ("I guess something is not working...\n"+e.message);
              return "";
@@ -115,7 +126,6 @@ namespace Settings {
         news_source.url = geoname.get_string_member ("url");
         news_source.category = geoname.get_string_member ("category");
         news_source.country = geoname.get_string_member ("country");
-        //news_source.besticon_url = get_besticon_url (geoname.get_string_member ("url"));
 
         //get_besticon_url.begin (news_source.url, (obj, res) => {
           //news_source.besticon_url = yield get_besticon_url (geoname.get_string_member ("url"));

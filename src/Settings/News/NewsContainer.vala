@@ -22,8 +22,10 @@ namespace Settings {
     private Gtk.Revealer check_revealer;
     private Gtk.Image image;
     private Gtk.Label name;
+    private Gtk.Label description;
+    private Settings settings;
 
-    public string uri { get; construct; }
+    public NewsSource news_source { get; construct; }
     public string icon { get; construct; }
     public Gdk.Pixbuf thumb { get; construct; }
     public Gtk.Image img_thumb;
@@ -59,16 +61,17 @@ namespace Settings {
         }
     }
 
-    public NewsContainer (string uri, bool active) {
-        Object (uri: uri, active: active);
+    public NewsContainer (NewsSource news_source) {
+        Object (news_source: news_source);
     }
 
     construct {
+        settings = Settings.get_default ();
         var scale = get_style_context ().get_scale ();
 
          try {
-            if(uri != null){
-              thumb = load_new_image (uri);
+            if(news_source != null){
+              thumb = load_new_image (news_source.url, news_source.id);
             }
         } catch (Error e) {
             //critical ("Failed to load wallpaper thumbnail: %s", e.message);
@@ -76,9 +79,13 @@ namespace Settings {
             //return;
         }
 
-        var uri_name = uri.replace ("-"," ");
+        //var uri_name = news_source.name.replace ("-"," ");
 
-        name = new Gtk.Label (uri_name);
+        name = new Gtk.Label (news_source.name);
+        description = new Gtk.Label (news_source.description);
+        description.set_line_wrap (true);
+        description.max_width_chars = 30;
+
 
         image = new Gtk.Image ();
         image.gicon = thumb;
@@ -90,9 +97,10 @@ namespace Settings {
         card_box.get_style_context ().add_class ("card");
         
         card_box.attach (image, 0, 0, 1, 1);
-        card_box.attach (name, 0, 1, 1, 1);
-        card_box.margin = 15;
-        card_box.set_row_spacing (10);
+        card_box.attach (name, 1, 0, 1, 1);
+        card_box.attach (description, 1, 1, 1, 1);
+        card_box.margin = 10;
+        card_box.set_row_spacing (15);
 
         //var check = new Gtk.Image.from_icon_name ("selection-checked", Gtk.IconSize.LARGE_TOOLBAR);
         var check = new Gtk.Image.from_resource  ("/com/github/nick92/Coffee/icons/symbol/selection-check.svg");
@@ -114,27 +122,27 @@ namespace Settings {
         margin = 6;
         add (overlay);
 
-        if(active)
+        if(settings.get_news_source_bool (news_source.id))
           checked = true;
         else
           checked = false;
 
         activate.connect (() => {
-            if(active)
+            if(settings.get_news_source_bool (news_source.id))
               checked = true;
             else
               checked = false;
         });
 
-        card_box.query_tooltip.connect ((x, y, keyboard_tooltip, tooltip) => {
+        /* card_box.query_tooltip.connect ((x, y, keyboard_tooltip, tooltip) => {
 			//tooltip.set_icon_from_icon_name ("document-open", Gtk.IconSize.LARGE_TOOLBAR); 
 			tooltip.set_markup ("<b>My Tooltip</b>");
 			return true;
-		});
+		});*/
     }
 
-    // We need to first download the screenshot locally so that it doesn't freeze the interface.
-    private Gdk.Pixbuf load_new_image (string url) {
+    //We need to first download the screenshot locally so that it doesn't freeze the interface.
+    private Gdk.Pixbuf load_new_image (string url, string icon_name) {
         debug("Getting icon from Besticon:%s", url);
         //var image = new Gdk.Pixbuf ();
         Gdk.Pixbuf image = null;
@@ -144,22 +152,33 @@ namespace Settings {
         }
         string path = Path.build_path (Path.DIR_SEPARATOR_S, GLib.Environment.get_user_cache_dir (), "com.github.nick92.coffee", "news_icons");
         File fileimage;
-        //var source = File.new_for_uri (url);
-        fileimage = File.new_for_path (path  + Path.DIR_SEPARATOR_S + url);
+        fileimage = File.new_for_path (path  + Path.DIR_SEPARATOR_S + icon_name);
 
         try {
             if(fileimage.query_exists ()){
               image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
             }
             else {
+                //var source = File.new_for_uri (url);
+                //source.copy (fileimage, GLib.FileCopyFlags.OVERWRITE);
                 NewsSourceGet news_sources_get = new NewsSourceGet ();
                 news_sources_get.get_besticon_url (url, (obj, res) => {
                     var besticon_url = news_sources_get.get_besticon_url.end (res);
-                    if(fileimage.query_exists ()){
-                        image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
-                    }                        
+                    if(besticon_url != null && besticon_url != "") {
+                        var source = File.new_for_uri (besticon_url);
+                        source.copy (fileimage, GLib.FileCopyFlags.OVERWRITE);
+                        if(fileimage.query_exists ()){
+                            image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
+                        }                        
+                    }
+                    else
+                        image = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/question.png", 160, 100, true);    
                 });
-                image = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/question.png", 160, 100, true);
+                if(fileimage.query_exists ()){
+                    image = new Gdk.Pixbuf.from_file_at_scale (fileimage.get_path (), 160, 100, true);
+                }
+                else
+                    image = new Gdk.Pixbuf.from_resource_at_scale ("/com/github/nick92/Coffee/icons/news/question.png", 160, 100, true);
             }
 
         } catch (Error e) {
