@@ -16,7 +16,6 @@ You'll need the following dependencies:
 	libgtk-3-dev
 	libjson-glib-dev
 	libsoup2.4-dev
-	libwebkit2gtk-4.0-dev
 	libgee-0.8-dev
 	libgeocode-glib-dev
 	libgeoclue-2-dev
