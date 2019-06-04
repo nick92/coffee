@@ -34,26 +34,6 @@
     color: @banner_fg_color;
 }
 
-.category {
-    background-image: linear-gradient(to bottom,
-                              #fafafa,
-                              #f2f2f2
-                              );
-    background-position: center center;
-    background-repeat: no-repeat;
-    border: 1px solid alpha (#000, 0.15);
-    border-radius: 5px;
-
-    box-shadow: inset 0 0 0 1px alpha (#fff, 0.05),
-                inset 0 1px 0 0 alpha (#fff, 0.45),
-                inset 0 -1px 0 0 alpha (#fff, 0.15),
-                0 3px 2px -1px alpha (#000, 0.15),
-                0 3px 5px alpha (#000, 0.10);
-    color: #4d4d4d;
-    font-size: 20px;
-    font-weight: 200;
-}
-
 .h1 {
 	font-size: 20px;
         font-weight: 400;
@@ -73,16 +53,25 @@
 }
 
 .h4 {
-    font-size: 10px;
+    font-size: 6px;
 }
 
 flowboxchild,
 GtkFlowBox .grid-child {
-    background-color: #F5F6F7;
+    background-color: #f4f5f7;
+    border: 1px solid alpha (#000, 0.15);
+    border-radius: 5px;
+    color: #4d4d4d;
+    box-shadow: inset 0 0 0 1px alpha (#fff, 0.05),
+                inset 0 1px 0 0 alpha (#fff, 0.45),
+                inset 0 -1px 0 0 alpha (#fff, 0.15),
+                0 3px 2px -1px alpha (#000, 0.15),
+                0 3px 5px alpha (#000, 0.10);
 }
 
 flowboxchild:focus .card,
 GtkFlowBox .grid-child:focus .card {
     border: 1px solid alpha (#000, 0.2);
     border-radius: 3px;
+    color: #4d4d4d;
 }
