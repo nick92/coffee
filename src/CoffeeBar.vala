@@ -118,22 +118,22 @@ namespace Coffee {
 
       if(!settings.get_location_bool || reloading)
       {
-        new Thread<void*> ("get_weather", () => {
+        //new Thread<void*> ("get_weather", () => {
           retriever.run_parser_weather ();
           weather_loaded = true;
     	    debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
-          return null;
-        });
+          //return null;
+        //});
       }
     }
 
     public async void get_weather_feed (){
       if(settings.geo_location_string != "") {
-        new Thread<void*> ("get_weather", () => {
+        //new Thread<void*> ("get_weather", () => {
           retriever.run_parser_weather ();
           debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
-          return null;
-        });
+          //return null;
+        //});
       }
       else{
         weather_loaded = true;

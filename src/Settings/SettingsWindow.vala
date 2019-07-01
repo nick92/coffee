@@ -45,7 +45,7 @@ namespace Settings {
         this.title = "Settings";
 
         // Sets the default size of a window:
-    		this.set_default_size (800, 500);
+    		this.set_default_size (900, 600);
         this.window_position = Gtk.WindowPosition.CENTER;
     		this.hide_titlebar_when_maximized = false;
 
