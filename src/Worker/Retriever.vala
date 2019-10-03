@@ -44,9 +44,7 @@ namespace Worker {
 
         if(post != null){
           post.parse_completed();
-          Idle.add(this.run_parser_news.callback);
         }
-        yield;
     }
 
     public async void run_parser_weather () {
@@ -60,10 +58,10 @@ namespace Worker {
           //if(settings.open_weather_bool)
             //parse_message (Sources.OPEN_WEATHER_MAP);
 
-          Idle.add(this.run_parser_weather.callback);
+          //  Idle.add(this.run_parser_weather.callback);
         }
       }
-      yield;
+      //  yield;
     }
 
     public void create_fake_news () {

@@ -107,33 +107,38 @@ namespace Coffee {
     }
 
     public void get_news_feed (){
-      //GLib.Idle.add(this.get_news_feed.callback);
-      new Thread<void*> ("get_news", () => {
-        //retriever.create_fake_news ();
-        retriever.run_parser_news ();
-  	    debug ("Got News at: %s s\n", timer.elapsed (out microseconds).to_string ());
-        return null;
-      });
+      try {
+          new Thread<void*>.try ("retrieve-news-thread", () => {
+            //  retriever.create_fake_news ();
+            retriever.run_parser_news();
+  	        debug ("Got News at: %s s\n", timer.elapsed (out microseconds).to_string ());
 
+            return null;
+          });
 
-      if(!settings.get_location_bool || reloading)
-      {
-        //new Thread<void*> ("get_weather", () => {
-          retriever.run_parser_weather ();
-          weather_loaded = true;
-    	    debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
-          //return null;
-        //});
+          if(!settings.get_location_bool || reloading)
+            get_weather_feed ();
+            
+      } catch (Error e) {
+          warning (e.message);
       }
+      
     }
 
-    public async void get_weather_feed (){
+    public void get_weather_feed (){
       if(settings.geo_location_string != "") {
-        //new Thread<void*> ("get_weather", () => {
-          retriever.run_parser_weather ();
-          debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
-          //return null;
-        //});
+        try {
+          new Thread<void*>.try ("retrieve-weather-thread", () => {
+            retriever.run_parser_weather ();
+            
+            weather_loaded = true;
+            debug ("Got Weather at: %s s\n", timer.elapsed (out microseconds).to_string ());
+
+            return null;
+          });
+        } catch (Error e) {
+          warning (e.message);
+        }
       }
       else{
         weather_loaded = true;
