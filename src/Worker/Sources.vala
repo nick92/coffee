@@ -20,5 +20,5 @@
 
 namespace Worker.Sources {
     const string DARK_SKY = "dark-sky";
-    const string OPEN_WEATHER_MAP = "open-weather-map";
+    const string OPEN_WEATHER_MAP = "open-weather-map"; //TODO - add support for open weather map
 }

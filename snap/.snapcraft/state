@@ -1,0 +1,4 @@
+!GlobalState
+assets:
+  build-packages: [libjavascriptcoregtk-4.0-dev=2.24.1-0ubuntu0.18.04.1, libwebkit2gtk-4.0-dev=2.24.1-0ubuntu0.18.04.1]
+  build-snaps: []
